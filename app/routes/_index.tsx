@@ -28,11 +28,11 @@ export default function Index () {
   const { users } = useLoaderData<typeof loader>();
   console.log(users,'users');
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-     <h1 className="text-3xl font-bold underline">
+    <div >
+     <h1 className="text-3xl text-red-500 font-bold underline">
       Hello world!
       </h1>
-      <h2 className="text-2xl font-bold underline">Users</h2>
+      <h2 className="text-2xl font-bold text-purple-500 underline">Users</h2>
       <ul>
         {users.map((user) => (
           <li key={user.id}>{user.username}</li>
