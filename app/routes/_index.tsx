@@ -34,7 +34,14 @@ export default function Index () {
       Hello world!
       </h1>
       <h2 className="text-2xl font-bold">Users</h2>
-
+      <p className="text-lg font-bold">
+        {users.map((user) => (
+          <div key={user.id}>
+            <p>{user.username}</p>
+            <p>{user.email}</p>
+          </div>
+        ))}
+</p>
     </div>
   );
 }
