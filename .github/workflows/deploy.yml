@@ -4,9 +4,10 @@ on:
   push:
     branches:
       - main
+      - development
   pull_request:
     branches:
-      - development/**
+      - development
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -22,7 +23,7 @@ jobs:
     name: 🚀 Deploy
     runs-on: ubuntu-latest
     # only deploy main/dev branch on pushes
-    if: ${{ (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/development/**') && (github.event_name == 'push'  || github.event_name == 'pull_request')}}
+    if: ${{ (github.ref == 'refs/heads/main' || github.ref != 'refs/heads/main' ) && (github.event_name == 'push'  || github.event_name == 'pull_request')}}
 
     steps:
       - name: ⬇️ Checkout repo
@@ -43,6 +44,7 @@ jobs:
         run: flyctl deploy --remote-only --build-arg COMMIT_SHA=${{ github.sha }} --app ${{ steps.app_name.outputs.value }}-development
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}-DEVELOPMENT
 
       - name: 🚀 Deploy Production
         if: ${{ github.ref == 'refs/heads/main' }}
