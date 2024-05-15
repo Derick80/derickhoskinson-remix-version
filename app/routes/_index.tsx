@@ -1,4 +1,5 @@
-import type { MetaFunction } from "@remix-run/node";
+import { json, type MetaFunction } from "@remix-run/node";
+import { prisma } from '~/.server/prisma.server';
 
 export const meta: MetaFunction = () => {
   return [
@@ -6,6 +7,21 @@ export const meta: MetaFunction = () => {
     { name: "description", content: "Welcome to Remix!" },
   ];
 };
+
+
+export async function loader () {
+
+  const users = await prisma.user.findMany();
+
+  if(!users) {
+    throw new Error('No users found');
+  }
+
+  console.log(users,'users');
+
+  return json({ users });
+
+}
 
 export default function Index() {
   return (
