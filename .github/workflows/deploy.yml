@@ -9,6 +9,7 @@ on:
     branches:
       - main
       - development/**
+      # update development/FeatureAB
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
