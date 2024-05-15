@@ -4,10 +4,10 @@ on:
   push:
     branches:
       - main
-      - development
+      - development/** # deploy all branches that start with development/
   pull_request:
     branches:
-      - development
+      - development/** # deploy all branches that start with development/
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
