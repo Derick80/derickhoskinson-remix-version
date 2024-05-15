@@ -6,7 +6,7 @@ on:
       - main
   pull_request:
     branches:
-      - development/**
+      - development
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
