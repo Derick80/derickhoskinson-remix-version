@@ -31,7 +31,15 @@ export default function Index () {
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
      <h1 className="text-3xl font-bold underline">
       Hello world!
-    </h1>
+      </h1>
+      {
+        users.map((user) => (
+          <div key={user.id}>
+            <h2>{user.username}</h2>
+            <p>{user.email}</p>
+          </div>
+        ))
+      }
     </div>
   );
 }
