@@ -6,6 +6,9 @@
 app = 'rmxdh'
 primary_region = 'ord'
 
+[env]
+  FLY_SCALE_TO_ZERO = "1h"
+
 [build]
 
 [deploy]
