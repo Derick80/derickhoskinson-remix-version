@@ -1,5 +1,6 @@
-import { json, type MetaFunction } from "@remix-run/node";
+import { json, LoaderFunctionArgs, type MetaFunction } from "@remix-run/node";
 import { useLoaderData } from '@remix-run/react';
+import { sessionStorage } from '~/.server/auth.server';
 import { prisma } from '~/.server/prisma.server';
 
 export const meta: MetaFunction = () => {
@@ -10,22 +11,28 @@ export const meta: MetaFunction = () => {
 };
 
 
-export async function loader () {
+export async function loader ({ request }: LoaderFunctionArgs) {
+  const session = await sessionStorage.getSession(request.headers.get('Cookie'));
+  console.log(session.data,'session');
 
-  const users = await prisma.user.findMany();
 
-  if(!users) {
-    throw new Error('No users found');
-  }
+  const users = await prisma.user.findMany({
+    include: {
+      sessions: true,
+      accounts: true,
+    }
+  });
 
-  console.log(users,'users');
+
+
+
 
   return json({ users });
-
 }
 
+
 export default function Index () {
-  const { users } = useLoaderData<typeof loader>();
+  const { users,user } = useLoaderData<typeof loader>();
   console.log(users,'users');
   return (
     <div >

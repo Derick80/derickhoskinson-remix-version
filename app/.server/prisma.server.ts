@@ -24,4 +24,8 @@ if (process.env.NODE_ENV === 'production') {
     }
     prisma = global.__db
 }
-export { prisma }
+
+const linkExpirationTime = 1000 * 60 * 30
+const sessionExpirationTime = 1000 * 60 * 60 * 24 * 365
+
+export { prisma, linkExpirationTime, sessionExpirationTime}
