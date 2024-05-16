@@ -3,8 +3,15 @@
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'rmxdh'
+app = 'dhrmx'
 primary_region = 'ord'
+kill_signal = "SIGINT"
+kill_timeout = 5
+restart_policy = "always"
+
+[[services]]
+  internal_port = 3000
+  protocol = "tcp"
 
 [env]
   FLY_SCALE_TO_ZERO = "1h"
@@ -12,7 +19,7 @@ primary_region = 'ord'
 [build]
 
 [deploy]
-  release_command = 'npx prisma db push && npx prisma migrate deploy'
+  release_command = 'npx prisma migrate deploy'
 
 [http_service]
   internal_port = 3000
