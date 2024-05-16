@@ -11,7 +11,9 @@ styles/app.css
 tailwind.config.js
 tailwind.config.ts
 readMe.md
-.eslintrc.js
+.eslintrc.cjs
+postcss.config.js
+.github/workflows/deploy.yml
 .prettierrc.js
 .prettierrc.json
 package.json
