@@ -4,9 +4,10 @@
 
 ## Prisma Seeding in Development
 
+
 - Until form login is working again login with discord and then copy paste the userId from prisma studio into the seed file
 
-## Component References
+## Component Reference
 
 - Accordian - <https://github.com/AllanSimoyi/PersonalWebsite/blob/main/app/core/components/AccordionItem.tsx>
 - Post Editor - [TipTap](https://tiptap.dev/)
