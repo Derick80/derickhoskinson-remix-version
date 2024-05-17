@@ -5,8 +5,8 @@ import { prisma } from '~/.server/prisma.server'
 
 export const meta: MetaFunction = () => {
   return [
-    { title: 'New Remix App' },
-    { name: 'description', content: 'Welcome to Remix!' }
+    { title: `Derick's Home on the Web` },
+    { name: 'description', content: 'Welcome to DerickHoskinson.com' }
   ]
 }
 
