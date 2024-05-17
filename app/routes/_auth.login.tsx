@@ -7,7 +7,8 @@ import { sessionStorage } from '~/.server/auth.server'
 import { Icon } from '~/components/icon-component'
 import { Button } from '~/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
-import famPhoto from 'public/family_dl.jpg'
+import famPhoto from '/family_dl_thwxot.avif'
+
 export async function loader ({ request }: LoaderFunctionArgs) {
   const authSession = await sessionStorage.getSession(
     request.headers.get('Cookie')
