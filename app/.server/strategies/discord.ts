@@ -1,5 +1,5 @@
 import { DiscordStrategy } from 'remix-auth-discord'
-import { createUser, getAccount, ProviderUser } from '../auth.server'
+import { createUser, getAccount, ProviderUserWithSession } from '../auth.server'
 
 const discordClientId = process.env.DISCORD_CLIENT_ID
 const discordClientSecret = process.env.DISCORD_CLIENT_SECRET
@@ -8,7 +8,7 @@ const discordCallbackUrl = process.env.DISCORD_CALLBACK_URL
 if (!discordClientId || !discordClientSecret || !discordCallbackUrl) {
   throw new Error('Discord credentials are missing')
 }
-export const discordStrategy = new DiscordStrategy(
+export const discordStrategy = new DiscordStrategy<ProviderUserWithSession>(
   {
     clientID: discordClientId,
     clientSecret: discordClientSecret,
@@ -16,7 +16,11 @@ export const discordStrategy = new DiscordStrategy(
     // Provide all the scopes you want as an array
     scope: ['identify', 'email']
   },
-  async ({ accessToken, refreshToken, profile }): Promise<ProviderUser> => {
+  async ({
+    accessToken,
+    refreshToken,
+    profile
+  }): Promise<ProviderUserWithSession> => {
     const userEmail = profile.__json.email
     if (!userEmail) {
       throw new Error('Email is required')
@@ -34,11 +38,12 @@ export const discordStrategy = new DiscordStrategy(
         username: account.user.username || '',
         email: account.user.email,
         avatarUrl: account.user.avatarUrl || '',
-        role: account.user.role,
+        role: account.user.role || 'user',
         provider: account.provider,
         providerId: account.providerAccountId,
         token: accessToken,
-        refreshToken
+        refreshToken,
+        sessionId: account.user.sessions[0].id
       }
     }
 
@@ -50,7 +55,8 @@ export const discordStrategy = new DiscordStrategy(
       provider: profile.provider,
       providerId: profile.id,
       token: accessToken,
-      refreshToken
+      refreshToken,
+      role: 'user'
     }
 
     const user = await createUser(userData)
@@ -60,11 +66,12 @@ export const discordStrategy = new DiscordStrategy(
       username: user.username || '',
       email: user.email,
       avatarUrl: user.avatarUrl || '',
-      role: user.role,
+      role: user.role || 'user',
       provider: profile.provider,
       providerId: profile.id,
       token: accessToken,
-      refreshToken
+      refreshToken,
+      sessionId: user.sessions[0].id
     }
   }
 )

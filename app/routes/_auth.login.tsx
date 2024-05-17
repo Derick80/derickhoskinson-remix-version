@@ -1,31 +1,21 @@
 // create a loader that checks the login status
 
-import { json, LoaderFunctionArgs, redirect } from '@remix-run/node'
-import { Form, Link, useLoaderData } from '@remix-run/react'
+import { json, LoaderFunctionArgs } from '@remix-run/node'
+import { Form } from '@remix-run/react'
 import { HoneypotInputs } from 'remix-utils/honeypot/react'
-import { authenticator, sessionStorage } from '~/.server/auth.server'
-export async function loader({ request, params }: LoaderFunctionArgs) {
-  const session = await sessionStorage.getSession(request.headers.get('cookie'))
+import { sessionStorage } from '~/.server/auth.server'
+export async function loader({ request }: LoaderFunctionArgs) {
+  const authSession = await sessionStorage.getSession(
+    request.headers.get('Cookie')
+  )
+  const currentSession = authSession.get('authSession')
+  console.log(currentSession, 'sessionId from loginroute')
 
-  // if there's an error in the session, show it
+  // const user = await isAuthenticated(request)
+  // if (user) return redirect('/')
 
-  const error = session.get(authenticator.sessionErrorKey)
-  if (error) {
-    return json(
-      { error },
-      {
-        headers: {
-          'Set-Cookie': await sessionStorage.commitSession(session) // You must commit the session whenever you read a flash
-        }
-      }
-    )
-  }
-
-  // otherwise, render the login page
-  return json({ provider: authenticator.sessionStrategyKey })
+  return json({})
 }
-
-// app/routes/login.tsx
 
 export default function Login() {
   return (

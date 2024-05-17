@@ -18,7 +18,15 @@ export type ProviderUser = {
   refreshToken?: string
   sessionId?: string
 }
-export const SESSION_ID_KEY: string = 'sessionId'
+
+export type CookieSession = {
+  [cookieSessionId: string]: ProviderUser[]
+}
+export type ProviderUserWithSession = ProviderUser & {
+  sessionId: string
+}
+
+export const SESSION_ID_KEY: string = 'authSession'
 export const SESSION_EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 30
 export const getSessionExpirationDate = () =>
   new Date(Date.now() + SESSION_EXPIRATION_TIME)
@@ -43,7 +51,7 @@ const cookieOptions = {
   secure: process.env.NODE_ENV === 'production'
 }
 
-export const sessionStorage = createCookieSessionStorage<ProviderUser>({
+export const sessionStorage = createCookieSessionStorage<CookieSession>({
   cookie: cookieOptions
 })
 export const getSession = async (request: Request) => {
@@ -60,11 +68,14 @@ export const commitSession = async (session: Session) => {
   return headers
 }
 
-export const authenticator = new Authenticator<ProviderUser>(sessionStorage, {
-  sessionKey: SESSION_ID_KEY,
-  throwOnError: true,
-  sessionErrorKey: 'authError'
-})
+export const authenticator = new Authenticator<ProviderUserWithSession>(
+  sessionStorage,
+  {
+    sessionKey: SESSION_ID_KEY,
+    throwOnError: true,
+    sessionErrorKey: 'authError'
+  }
+)
 
 authenticator.use(discordStrategy)
 
@@ -100,18 +111,6 @@ export const getAccount = async ({
   return account
 }
 
-export const getUser = async (email: string) => {
-  return await prisma.user.findUnique({
-    where: {
-      email
-    },
-    include: {
-      sessions: true,
-      accounts: true
-    }
-  })
-}
-
 export const createUser = async (
   userData: Omit<ProviderUser, 'userId' | 'role'>
 ) => {
@@ -120,7 +119,6 @@ export const createUser = async (
       email: userData.email,
       username: userData.username,
       avatarUrl: userData.avatarUrl,
-
       sessions: {
         create: {
           expirationDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7)
@@ -147,6 +145,11 @@ export const createUser = async (
           providerAccountId: true,
           accessToken: true,
           refreshToken: true
+        }
+      },
+      sessions: {
+        select: {
+          id: true
         }
       }
     }

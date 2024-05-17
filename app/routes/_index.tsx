@@ -11,9 +11,11 @@ export const meta: MetaFunction = () => {
 }
 
 export async function loader({ request }: LoaderFunctionArgs) {
+  // I need to figure out how to fix these types
   const session = await sessionStorage.getSession(request.headers.get('Cookie'))
-  console.log(session.data, 'session')
+  const sessionId = session.get('authSession')
 
+  console.log(sessionId, 'sessionId from _index loader')
   const users = await prisma.user.findMany({
     include: {
       sessions: true,
@@ -25,8 +27,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export default function Index() {
-  const { users, user } = useLoaderData<typeof loader>()
-  console.log(users, 'users')
+  const { users } = useLoaderData<typeof loader>()
   return (
     <div>
       <h1 className='text-3xl text-red-500 font-bold underline'>
