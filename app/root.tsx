@@ -22,7 +22,10 @@ import stylesheet from '~/tailwind.css?url'
 import { honeypot } from './.server/honeypot.server'
 import { HoneypotInputs, HoneypotProvider } from 'remix-utils/honeypot/react'
 import { isAuthenticated } from './.server/auth.server'
-import { SunIcon, MoonIcon, LaptopIcon, ReaderIcon, HomeIcon, PersonIcon, CubeIcon, TargetIcon } from '@radix-ui/react-icons'
+import {
+  SunIcon,
+  MoonIcon,
+  LaptopIcon} from '@radix-ui/react-icons'
 import { z } from 'zod'
 import { getTheme, setTheme, Theme } from './.server/theme.server'
 import { ClientHintCheck, getHints, useHints } from './lib/client-hints'
@@ -32,7 +35,6 @@ import { useNonce } from './lib/nonce-providers'
 import { GeneralErrorBoundary } from './components/error-boundry'
 import { getEnv } from './.server/env.server'
 import { Icon } from './components/icon-component'
-
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: stylesheet }
@@ -91,7 +93,7 @@ function Document({
   env?: Record<string, string>
 }) {
   return (
-    <html lang='en' className={`${theme} h-full overflow-x-hidden`}>
+    <html lang='en' className={`${theme} h-full woverflow-x-hidden`}>
       <head>
         <ClientHintCheck nonce={nonce} />
         <Meta />
@@ -122,24 +124,24 @@ function App() {
 
   return (
     <Document nonce={nonce} theme={theme}>
-      <div className='flex h-screen flex-col justify-between'>
+      <div className='flex h-screen flex-col border-4 border-pink-500 justify-between'>
         <header className='border-2 border-blue-500 px-0'>
-          <div
-            className='flex flex-row items-center justify-between'>
-<ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />
-          <NavigationBar
-            />
+          <div className='flex flex-row items-center justify-between'>
+            <ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />
+            <NavigationBar />
             <div className='flex gap-2'>
               <Icon name='apple'></Icon>
-              <ThemeSwitch userPreference={ data.requestInfo.userPrefs.theme } />
-              </div>
-  </div>
+              <ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />
+            </div>
+          </div>
         </header>
         <div className='flex-1 border-2 border-green-500'>
           <Outlet />
         </div>
 
         <div className='container flex justify-between pb-5'>
+
+                      <ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />
 
         </div>
       </div>
@@ -234,32 +236,33 @@ function ThemeSwitch({ userPreference }: { userPreference?: Theme | null }) {
 /* Navigation Bar */
 
 const NavigationBar = () => {
-
-    return (
-            <nav className='flex justify-between border-2 border-red-500'>
-        <ul
-          className='flex gap-4
+  return (
+    <nav className='flex justify-between border-2 border-red-500'>
+      <ul
+        className='flex gap-4
             items-center
-          '>
-          { menuItems.map((item) => (
-            <li key={ item.label }>
-              <NavLink
-                to={ item.path }
-                className={({ isActive }) =>
-                            ` ${isActive ? 'underline flex items-center' : 'flex items-center'}`
-                        }
-                title={ item.title }>
-                { item.icon }
-             <span className='hidden md:block'>{ item.label }</span>
-              </NavLink>
-
-            </li>
-          ))}
-          </ul>
-            </nav>
-    )
+          '
+      >
+        {menuItems.map((item) => (
+          <li key={item.label}>
+            <NavLink
+              to={item.path}
+              className={({ isActive }) =>
+                ` ${
+                  isActive ? 'underline flex items-center' : 'flex items-center'
+                }`
+              }
+              title={item.title}
+            >
+              {item.icon}
+              <span className='hidden md:block'>{item.label}</span>
+            </NavLink>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
 }
-
 
 type MenuItem = {
   label: string
@@ -267,60 +270,45 @@ type MenuItem = {
   path: string
   icon: React.ReactNode
 }
-export const menuItems:MenuItem[] = [
+export const menuItems: MenuItem[] = [
   {
     label: 'Home',
     title: 'Click to go to the home page',
     path: '/',
-    icon: <Icon name='book'
-
-    ></Icon>
+    icon: <Icon name='book'></Icon>
   },
   {
     label: 'Blog',
     title: 'View the blog posts',
     path: '/blog',
-    icon: <Icon name='book'
-      >
-
-      </Icon>
+    icon: <Icon name='book'></Icon>
   },
   {
     label: 'About',
     title: 'Learn more about me',
     path: '/about',
-    icon:<Icon name='coffee'
-      >
-
-      </Icon>
+    icon: <Icon name='coffee'></Icon>
   },
   {
     label: 'Projects',
     title: 'View the projects',
     path: '/projects',
-    icon: <Icon name='calculator'
-      ></Icon>
+    icon: <Icon name='calculator'></Icon>
   },
   {
     label: 'CV',
     title: 'View my CV',
     path: '/cv',
-    icon: <Icon name='dna'
-      className='h-6 w-6'></Icon>
-
+    icon: <Icon name='dna' className='h-6 w-6'></Icon>
   },
 
   {
     label: 'Users',
     title: 'View the users',
     path: '/users',
-    icon:
-      <Icon name='users'
-        ></Icon>
+    icon: <Icon name='users'></Icon>
   }
 ]
-
-
 
 /* End Navigation */
 

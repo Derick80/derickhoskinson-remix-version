@@ -1,7 +1,6 @@
-import { type SVGProps } from "react"
-import { type IconName } from "./icons/name"
-import  href  from "./icons/sprite.svg"
-import { cn } from '~/lib/utils'
+import { type SVGProps } from 'react'
+import { type IconName } from './icons/name'
+import href from './icons/sprite.svg'
 
 export function Icon({
   name,
@@ -13,8 +12,8 @@ export function Icon({
 }) {
   if (children) {
     return (
-      <span className="inline-flex gap-x-2">
-        <Icon name={ name } className={ className } {...props} />
+      <span className='inline-flex gap-x-2'>
+        <Icon name={name} className={className} {...props} />
         {children}
       </span>
     )

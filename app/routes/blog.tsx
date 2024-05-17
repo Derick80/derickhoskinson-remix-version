@@ -1,21 +1,12 @@
-import { type LoaderFunctionArgs, json } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { type LoaderFunctionArgs, json } from '@remix-run/node'
+import { useLoaderData } from '@remix-run/react'
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
-
-  return json({});
+  return json({})
 }
 
-
-
 export default function nameofroute() {
-    const data = useLoaderData<typeof loader>();
+  const data = useLoaderData<typeof loader>()
 
-    return (
-        <div
-            className= ''
-        >
-
-        </div>
-    )
+  return <div className=''></div>
 }

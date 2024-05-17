@@ -4,7 +4,8 @@
 
 
 nvm use node v20.11.0
-
+### Notes
+- [SEO](https://github.com/nasa-gcn/remix-seo)
 ## Prisma Seeding in Development
 
 
