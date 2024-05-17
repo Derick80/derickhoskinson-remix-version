@@ -17,6 +17,7 @@
     "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "target": "ES2022",
+    "noImplicitAny": true,
     "strict": true,
     "allowJs": true,
     "skipLibCheck": true,

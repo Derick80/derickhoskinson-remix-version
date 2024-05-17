@@ -2,6 +2,9 @@
 
 - [Remix Docs](https://remix.run/docs)
 
+
+nvm use node v20.11.0
+
 ## Prisma Seeding in Development
 
 
