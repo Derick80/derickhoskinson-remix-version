@@ -7,15 +7,41 @@ published: true
 categories: [database, cockroachdb, postgres]
 ---
 
+import { Button } from '~/components/ui/button'
+
+import { Button as BB } from './button.tsx'
+
 export const toc = [{depth: 1, value: 'The title'}]
+
 export const wow = 'wow!'
 
+import { TContainer } from '~/components/tst-container'
+
 # {frontmatter.title}
+
 ## Context
 
+<BB>hi</BB>
+
+
+
+<Button
+
+>
+click me
+</Button>
+
+### Test import button
+<TContainer />
+
+
+### Old content
 
 VariantAlleles.com will use a distributed SQL database that is compatible with postgres to store data. The database is hosted on cockroachlabs cloud.
 
+
+
+## Test out code blocks with syntax highlighting
 ```ts
 function getImageBuilder (
     id: string,

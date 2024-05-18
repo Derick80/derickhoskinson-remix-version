@@ -7,10 +7,35 @@ published: true
 categories: [art, travel, japan]
 ---
 
-# {frontmatter.title}
+# Haroon Mizra
+
+## Context
+
 
 While in Japan, I had the opportunity to view some remarkable art installations created by an artist who is not of Japanese origin. Although I am not well-versed in the artist's background beyond the details presented in the [Wikipedia](https://en.wikipedia.org/wiki/Haroon_Mirza) article and the exhibit's information panel, I was thoroughly impressed by the exhibit.
 
 The installation itself is particularly noteworthy for its use of vibrations, with the entire display resonating at a consistent frequency. There is also fascinating archaeological evidence that suggests that this frequency may have been used in ancient artifacts, making the exhibit even more intriguing.
+
+### Test out code blocks with syntax highlighting
+
+```ts
+
+function getImageBuilder (
+    id: string,
+    alt: string = '',
+    { className, style }: { className?: string; style?: CSSProperties } = {},
+): ImageBuilder
+{
+    function imageBuilder (transformations?: TransformerOption) {
+        return buildImageUrl(id, { transformations })
+    }
+    imageBuilder.alt = alt
+    imageBuilder.id = id
+    imageBuilder.className = className
+    imageBuilder.style = style
+    return imageBuilder
+}
+
+```
 
 ![exhibit image](/exhibit.webp)

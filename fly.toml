@@ -9,6 +9,9 @@ kill_signal = "SIGINT"
 kill_timeout = 5
 restart_policy = "always"
 
+[experimental]
+  auto_rollback = true
+
 [[services]]
   internal_port = 3000
   protocol = "tcp"

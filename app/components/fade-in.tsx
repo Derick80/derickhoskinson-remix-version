@@ -1,9 +1,9 @@
-import { Transition } from "@headlessui/react"
+import { Transition } from '@headlessui/react'
 
 export function FadeIn({
-  className = "",
+  className = '',
   show = true,
-  children,
+  children
 }: {
   className?: string
   show?: boolean
@@ -15,9 +15,9 @@ export function FadeIn({
       show={show}
       appear
       enter={`${className} transition-[opacity,transform] ease-out duration-[300ms,500ms]`}
-      enterFrom="opacity-0 -translate-y-1"
-      enterTo="opacity-100 translate-y-0"
-      leave="duration-0"
+      enterFrom='opacity-0 -translate-y-1'
+      enterTo='opacity-100 translate-y-0'
+      leave='duration-0'
     >
       {children}
     </Transition>
@@ -25,9 +25,9 @@ export function FadeIn({
 }
 
 export function FadeInUp({
-  className = "",
+  className = '',
   show = true,
-  children,
+  children
 }: {
   className?: string
   show?: boolean
@@ -39,9 +39,9 @@ export function FadeInUp({
       show={show}
       appear
       enter={`${className} transition-[opacity,transform] ease-out duration-[300ms,500ms]`}
-      enterFrom="opacity-0 translate-y-1"
-      enterTo="opacity-100 translate-y-0"
-      leave="duration-0"
+      enterFrom='opacity-0 translate-y-1'
+      enterTo='opacity-100 translate-y-0'
+      leave='duration-0'
     >
       {children}
     </Transition>

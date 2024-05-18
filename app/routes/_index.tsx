@@ -6,7 +6,14 @@ import { prisma } from '~/.server/prisma.server'
 export const meta: MetaFunction = () => {
   return [
     { title: `Derick's Home on the Web` },
-    { name: 'description', content: 'Welcome to DerickHoskinson.com' }
+    { name: 'description', content: 'Welcome to DerickHoskinson.com' },
+    {
+      name: 'keywords',
+      content:
+        'Learn Genetics, Talk Genetics, Talk Web Development, Learn Something new'
+    },
+    { name: 'robots', content: 'index,follow' },
+    { name: 'googlebot', content: 'index,follow' }
   ]
 }
 

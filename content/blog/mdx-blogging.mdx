@@ -1,0 +1,61 @@
+---
+title: MDX-Blogging
+date: 2024-05-18T03:23:59.149Z
+description: A post about how I build the mdx part of this blog
+author: Derick Hoskinson
+published: true
+ccategoriesgs: [documentation, learning, coding]
+---
+export const toc = [{depth: 1, value: 'The title'}]
+
+
+# New MDX Page
+
+Welcome to your new MDX page. Start editing to add your content!
+
+
+### Process
+
+- I was having trouble access components from the MDX files. This was due to some misunderstanding of the current working directory and how mdx-bundler works.  So, i started to console.log things
+
+```ts
+const getMDXFileContent = async (slug: string) => {
+  const basePath = `${process.cwd()}/content/blog/`
+
+  console.log(basePath, 'basepath')
+
+  const source = await fsp.readFile(
+    path.join(`${basePath}/${slug}.mdx`),
+    'utf-8'
+  )
+
+  // bundle the mdx file
+  console.log(process.cwd(), 'cwd')
+
+  const data = await bundleMDX({
+    source,
+    cwd: `${process.cwd()}/app/components/ui/`,
+    mdxOptions: (options) => ({
+      remarkPlugins: [...(options.remarkPlugins ?? []), [remarkGfm]],
+      rehypePlugins: [
+        ...(options.rehypePlugins ?? []),
+        [
+          rehypePrettyCode,
+          (options = {
+            grid: false
+          })
+        ],
+        rehypeAutolinkHeadings,
+        rehypeSlug
+      ]
+    })
+  })
+  return data
+}
+```
+
+```ts
+/Users/voidnation/Documents/projects/remix-2024/remix-dh/content/blog/ basepath
+LOADER root triggered - 2.32 ms
+/Users/voidnation/Documents/projects/remix-2024/remix-dh cwd
+```

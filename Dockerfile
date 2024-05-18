@@ -6,15 +6,45 @@ FROM node:${NODE_VERSION}-slim as base
 
 LABEL fly_launch_runtime="Remix/Prisma"
 
-# Remix/Prisma app lives here
-WORKDIR /app
-
 # Set production environment
 ENV NODE_ENV production
 
+WORKDIR /app
 
-# Throw-away build stage to reduce size of final image
+# Setup production node_modules
+FROM base as deps
+
+WORKDIR /app
+
+ADD package.json package-lock.json ./
+
+RUN npm install --production=false
+
+FROM base as production-deps
+
+WORKDIR /app
+
+COPY --from=deps /app/node_modules /app/node_modules
+ADD package.json package-lock.json ./
+RUN npm prune --production
+
+# Build the app
 FROM base as build
+
+WORKDIR /app
+
+COPY --from=deps /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/npm
+COPY --from=deps /app/package.json /app/package.json
+COPY --from=deps /app/node_modules /app/node_modules
+
+ADD . .
+RUN touch ./app/refresh.ignored.js
+RUN npm run build
+# Finally, build the production image with minimal footprint
+FROM base as run
+
+
+#####################
 
 # Install packages needed to build node modules
 RUN apt-get update -qq && \
