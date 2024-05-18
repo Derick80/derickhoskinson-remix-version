@@ -76,7 +76,6 @@ const remarkPlugins: U.PluggableList = [
 
 const rehypePlugins: U.PluggableList = [
   trimCodeBlocks,
-    removePreContainerDivs,
 
 ]
 

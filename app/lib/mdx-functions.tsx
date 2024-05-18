@@ -44,6 +44,12 @@ const mdxComponents = {
 BlogImage,
   h1: (props: { children?: React.ReactNode }) => <h1 className='text-4xl font-bold mt-8 mb-4' tabIndex={-1} { ...props }>{props.children || ''}</h1>,
 }
+
+
+declare global {
+  type MDXProvidedComponents = typeof mdxComponents
+}
+
 /**
  * This should be rendered within a useMemo
  * @param code the code to get the component from

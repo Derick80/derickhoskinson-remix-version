@@ -1,9 +1,9 @@
 import { Authenticator } from 'remix-auth'
 import { prisma } from '~/.server/prisma.server'
 import { z } from 'zod'
-import { createCookieSessionStorage, Session } from '@remix-run/node'
+import { createCookieSessionStorage, Session, Session } from '@remix-run/node'
 
-import type { Prisma } from '@prisma/client'
+import type { Prisma, User } from '@prisma/client'
 import { discordStrategy } from './strategies/discord'
 
 export type ProviderUser = {
@@ -68,7 +68,9 @@ export const commitSession = async (session: Session) => {
   return headers
 }
 
-export const authenticator = new Authenticator<ProviderUserWithSession>(
+export const authenticator = new Authenticator<Session & {
+  user?: Partial<User>
+}>(
   sessionStorage,
   {
     sessionKey: SESSION_ID_KEY,
