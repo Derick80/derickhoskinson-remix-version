@@ -79,7 +79,7 @@
     "vite-tsconfig-paths": "^4.2.1"
   },
   "engines": {
-    "node": "20.11.0"
+    "node": "20.13.1"
   },
   "overrides": {
     "react": "18.3.0-canary-c3048aab4-20240326",
