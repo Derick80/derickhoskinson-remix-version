@@ -17,8 +17,7 @@ export default function BlogRoute() {
   // console.log(mdxexport.toc, 'mdxexport')
   const Component = useMdxComponent(data.data.code)
   return (
-    <div className='flex flex-col gap-4 p-10 max-w-screen-lg'>
-      <Component />
-    </div>
+    <article className="prose prose-slate"> <Component /></article>
   )
+
 }

@@ -18,6 +18,67 @@ export type FrontMatter = {
   categories: string[]
 }
 
+
+import {visit} from 'unist-util-visit'
+import type * as H from 'hast'
+import type * as U from 'unified'
+
+
+function trimCodeBlocks() {
+  return async function transformer(tree: H.Root) {
+    visit(tree, 'element', (preNode: H.Element) => {
+      if (preNode.tagName !== 'pre' || !preNode.children.length) {
+        return
+      }
+      const codeNode = preNode.children[0]
+      if (
+        !codeNode ||
+        codeNode.type !== 'element' ||
+        codeNode.tagName !== 'code'
+      ) {
+        return
+      }
+      const [codeStringNode] = codeNode.children
+      if (!codeStringNode) return
+
+      if (codeStringNode.type !== 'text') {
+        console.warn(
+          `trimCodeBlocks: Unexpected: codeStringNode type is not "text": ${codeStringNode.type}`,
+        )
+        return
+      }
+      codeStringNode.value = codeStringNode.value.trim()
+    })
+  }
+}
+
+function removePreContainerDivs() {
+  return async function preContainerDivsTransformer(tree: H.Root) {
+    visit(
+      tree,
+      {type: 'element', tagName: 'pre'},
+      function visitor(node, index, parent) {
+        if (parent?.type !== 'element') return
+        if (parent.tagName !== 'div') return
+        if (parent.children.length !== 1 && index === 0) return
+        Object.assign(parent, node)
+      },
+    )
+  }
+}
+
+const remarkPlugins: U.PluggableList = [
+    remarkGfm,
+    // remarkSlug,
+    // remarkAutolinkHeadings,
+    // remarkCodeTitles,
+]
+
+const rehypePlugins: U.PluggableList = [
+  trimCodeBlocks,
+  removePreContainerDivs,
+]
+
 // remarkSlug works
 
 const getMDXFileContent = async (slug: string) => {
@@ -36,24 +97,23 @@ const getMDXFileContent = async (slug: string) => {
   const data = await bundleMDX({
     source,
     cwd: `${process.cwd()}/app/components/ui/`,
-    mdxOptions: (options) => ({
-      remarkPlugins: [...(options.remarkPlugins ?? []), remarkGfm],
-      rehypePlugins: [
+    mdxOptions(options) {
+ options.remarkPlugins = [
+          ...(options.remarkPlugins ?? []),
+          remarkSlug,
+          [remarkAutolinkHeadings, {behavior: 'wrap'}],
+          remarkGfm,
+          ...remarkPlugins,
+        ],
+      options.rehypePlugins = [
         ...(options.rehypePlugins ?? []),
 
               rehypeSlug,
               [rehypeAutolinkHeadings, { behavior: 'wrap' }],
-         [ rehypeShiki,
-          {
-            // or `theme` for a single theme
-            themes: {
-              light: 'vitesse-dark',
-              dark: 'vitesse-dark'
-            }
-          }
-]
+
       ]
-    })
+        return options
+    }
   })
   return data
 }
