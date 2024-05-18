@@ -76,7 +76,8 @@ const remarkPlugins: U.PluggableList = [
 
 const rehypePlugins: U.PluggableList = [
   trimCodeBlocks,
-  removePreContainerDivs,
+    removePreContainerDivs,
+
 ]
 
 // remarkSlug works
@@ -109,7 +110,8 @@ const getMDXFileContent = async (slug: string) => {
         ...(options.rehypePlugins ?? []),
 
               rehypeSlug,
-              [rehypeAutolinkHeadings, { behavior: 'wrap' }],
+     [rehypeAutolinkHeadings, { behavior: 'wrap' }],
+              ...rehypePlugins,
 
       ]
         return options

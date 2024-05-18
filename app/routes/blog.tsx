@@ -1,10 +1,10 @@
 import { type LoaderFunctionArgs, json } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import getMDXFileContent from '~/.server/mdx.server'
-import { useMdxComponent } from '~/lib/mdx-funsions'
+import { useMdxComponent } from '~/lib/mdx-functions'
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
-  const data = await getMDXFileContent('/database')
+  const data = await getMDXFileContent('/wwwderickwww')
   if (!data) throw new Error('No data found')
   console.log(data, 'one post from blogroute')
 
@@ -19,5 +19,4 @@ export default function BlogRoute() {
   return (
     <article className="prose prose-slate"> <Component /></article>
   )
-
 }
