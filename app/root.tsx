@@ -121,21 +121,21 @@ function App() {
 
   return (
     <Document nonce={nonce} theme={theme}>
-      <div className='flex h-screen flex-col border-4 border-pink-500 justify-between'>
-        <header className='border-2 border-blue-500 px-0'>
-          <div className='flex flex-row items-center justify-between'>
-            <NavigationBar />
-            <div className='flex gap-2'>
-              <Icon name='apple'></Icon>
-              <ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />
-            </div>
+      <div className='flex h-full flex-col mx-auto max-w-3xl border-2 border-green-500'>
+        <header className='flex flex-row justify-between items-center px-0'>
+          <Icon name='apple'></Icon>
+
+          <NavigationBar />
+          <div className='flex gap-2'>
+            <Icon name='apple'></Icon>
+            <ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />
           </div>
         </header>
-        <div className='flex-1 border-2 border-green-500'>
+        <div className='flex-1 min-h-screen border-2 border-green-500'>
           <Outlet />
         </div>
 
-        <div className='container flex justify-between pb-5'></div>
+        <div className='container flex justify-between pb-5'>footer things</div>
       </div>
     </Document>
   )

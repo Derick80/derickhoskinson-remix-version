@@ -1,5 +1,6 @@
 import { DiscordStrategy } from 'remix-auth-discord'
-import { createUser, getAccount, ProviderUserWithSession } from '../auth.server'
+import { createUser, getAccount } from '../auth.server'
+import { getEnv } from '../env.server'
 
 const discordClientId = process.env.DISCORD_CLIENT_ID
 const discordClientSecret = process.env.DISCORD_CLIENT_SECRET
@@ -8,7 +9,7 @@ const discordCallbackUrl = process.env.DISCORD_CALLBACK_URL
 if (!discordClientId || !discordClientSecret || !discordCallbackUrl) {
   throw new Error('Discord credentials are missing')
 }
-export const discordStrategy = new DiscordStrategy<ProviderUserWithSession>(
+export const discordStrategy = new DiscordStrategy(
   {
     clientID: discordClientId,
     clientSecret: discordClientSecret,
