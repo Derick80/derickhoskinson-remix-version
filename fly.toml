@@ -7,7 +7,6 @@ app = 'dhrmx'
 primary_region = 'ord'
 kill_signal = "SIGINT"
 kill_timeout = 5
-grace_period = "5s"
 restart_policy = "always"
 swap_size = 1024
 
@@ -19,10 +18,26 @@ swap_size = 1024
   internal_port = 3000
   protocol = "tcp"
 
+    [[services.ports]]
+    port = 80
+    handlers = ["http"]
+    force_https = true
+
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
+
   [services.concurrency]
     hard_limit = 25
     soft_limit = 20
     type = "connections"
+
+
+[[services.tcp_checks]]
+    interval = "15s"
+    timeout = "10s"
+    grace_period = "5s"
+    restart_limit = 0
 
 
 [env]
@@ -31,7 +46,7 @@ swap_size = 1024
 [build]
 
 [deploy]
-  release_command = 'npx prisma generate && npx prisma migrate deploy'
+  release_command = 'npx prisma migrate deploy'
   strategy = "bluegreen"
 
 [http_service]

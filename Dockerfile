@@ -43,6 +43,7 @@ RUN npm run build
 # Finally, build the production image with minimal footprint
 FROM base as run
 
+COPY --from=production-deps /app/node_modules /app/node_modules
 
 #####################
 
@@ -75,6 +76,11 @@ FROM base
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y openssl && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
+
+# Generate Prisma Client
+COPY --link prisma .
+RUN npx prisma generate
 
 # Copy built application
 COPY --from=build /app /app
