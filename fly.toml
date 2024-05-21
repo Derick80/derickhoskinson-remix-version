@@ -7,6 +7,7 @@ app = 'dhrmx'
 primary_region = 'ord'
 kill_signal = "SIGINT"
 kill_timeout = 5
+grace_period = "5s"
 restart_policy = "always"
 swap_size = 1024
 
@@ -31,6 +32,7 @@ swap_size = 1024
 
 [deploy]
   release_command = 'npx prisma generate && npx prisma migrate deploy'
+  strategy = "bluegreen"
 
 [http_service]
   internal_port = 3000
