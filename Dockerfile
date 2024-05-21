@@ -43,7 +43,6 @@ RUN npm run build
 # Finally, build the production image with minimal footprint
 FROM base as run
 
-COPY --from=production-deps /app/node_modules /app/node_modules
 
 #####################
 
@@ -55,7 +54,7 @@ RUN apt-get update -qq && \
 COPY --link package-lock.json package.json ./
 RUN npm ci --include=dev
 
-# # Generate Prisma Client
+# Generate Prisma Client
 COPY --link prisma .
 RUN npx prisma generate
 
@@ -77,14 +76,9 @@ RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y openssl && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
-
-# Generate Prisma Client ()I need this here)
-COPY --link prisma .
-RUN npx prisma generate
-
 # Copy built application
 COPY --from=build /app /app
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
-
+CMD [ "npm", "run", "start" ]
