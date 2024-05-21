@@ -51,8 +51,7 @@ const PostPreviews = (frontmatter: FrontMatter) => {
         </CardHeader>
         <CardContent className='pb-2 gap-4 w-full'>
           <CardDescription className='italic text-xs'>
-            {' '}
-            {frontmatter.description}
+                 {frontmatter.description}
           </CardDescription>
           <div className='flex flex-row gap-1 md:gap-2'>
             {frontmatter.categories.map((category) => (

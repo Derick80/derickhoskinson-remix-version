@@ -16,13 +16,19 @@ restart_policy = "always"
   internal_port = 3000
   protocol = "tcp"
 
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+    type = "connections"
+
+
 [env]
   FLY_SCALE_TO_ZERO = "1h"
 
 [build]
 
 [deploy]
-  release_command = 'npx prisma migrate deploy'
+  release_command = 'npx prisma generate && npx prisma migrate deploy'
 
 [http_service]
   internal_port = 3000
