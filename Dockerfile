@@ -80,11 +80,11 @@ RUN apt-get update -qq && \
 
 # Generate Prisma Client ()I need this here)
 COPY --link prisma .
-RUN npx prisma generate
+RUN npx prisma db push && npx prisma generate
 
 # Copy built application
 COPY --from=build /app /app
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
-CMD [ "npm", "run", "start" ]
+
