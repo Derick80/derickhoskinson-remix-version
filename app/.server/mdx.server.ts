@@ -22,7 +22,6 @@ export type FrontMatter = {
 import { visit } from 'unist-util-visit'
 import type * as H from 'hast'
 import type * as U from 'unified'
-import { CodeBlock } from '~/lib/mdx-functions'
 
 function trimCodeBlocks() {
   return async function transformer(tree: H.Root) {
@@ -67,6 +66,7 @@ function removePreContainerDivs() {
   }
 }
 
+
 const remarkPlugins: U.PluggableList = [
   remarkGfm
   // remarkSlug,
@@ -93,18 +93,15 @@ const getMDXFileContent = async (slug: string) => {
     source,
     cwd: `${process.cwd()}/app/components/ui/`,
     mdxOptions(options) {
-      ;(options.remarkPlugins = [
+      (options.remarkPlugins = [
         ...(options.remarkPlugins ?? []),
         remarkSlug,
-        [remarkAutolinkHeadings, { behavior: 'wrap' }],
         remarkGfm,
         ...remarkPlugins
       ]),
         (options.rehypePlugins = [
           ...(options.rehypePlugins ?? []),
 
-          rehypeSlug,
-          [rehypeAutolinkHeadings, { behavior: 'wrap' }],
           ...rehypePlugins
         ])
       return options
@@ -131,16 +128,20 @@ const getDirectoryFrontMatter = async (directory: string) => {
 
     // Use gray-matter to parse the post metadata section
     const matterResult = matter(fileContents)
-    const matterData = matterResult.data as FrontMatter
+
+    const matterData = matterResult.data as FrontMatter & {content: string}
 
     matterData.published = matterData.published ?? false
     matterData.slug = slug
+    matterData.content = matterResult.content
     //
 
     return matterData
   })
   return Promise.all(allPostsData)
 }
+
+// get a single mdx page by name
 
 const getMDXPage = async (pagename: string) => {
   const basePath = `${process.cwd()}/content/pages/`
@@ -153,12 +154,11 @@ const getMDXPage = async (pagename: string) => {
   )
 
   // bundle the mdx file
-  console.log(process.cwd(), 'cwd')
   // put tis back maybe   it puts ids on my headings i saw.               rehypeSlug,
   const data = await bundleMDX({
     source,
     mdxOptions(options) {
-      ;(options.remarkPlugins = [
+      (options.remarkPlugins = [
         ...(options.remarkPlugins ?? []),
         remarkSlug,
         [remarkAutolinkHeadings, { behavior: 'wrap' }],

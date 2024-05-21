@@ -32,18 +32,45 @@ import { useNonce } from './lib/nonce-providers'
 import { GeneralErrorBoundary } from './components/error-boundry'
 import { getEnv } from './.server/env.server'
 import { Icon } from './components/icon-component'
+import { getDirectoryFrontMatter } from './.server/mdx.server'
+
 
 export const links: LinksFunction = () => [
+
+  // preconnect to Google Fonts and the stylesheets
+  { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
+  { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&family=Slabo+27px&display=swap', crossOrigin: 'anonymous' },
   { rel: 'stylesheet', href: stylesheet }
+
 ]
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const user = await isAuthenticated(request)
 
+const frontmatter = await getDirectoryFrontMatter('blog')
+  const categories = frontmatter.map((post) => post.categories).flat()
+  const uniqueCategories = [...new Set(categories)]
+  const countEachCategory: { [key: string]: number } = categories.reduce((acc, category) => {
+    acc[category] = acc[category] ? acc[category] + 1 : 1
+    return acc
+  }, {} as { [key: string]: number })
+  // combine uniqueCategories and countEachCategory into an object
+  const categoriesWithCount = uniqueCategories.map((category) => {
+    return {
+      category,
+      count: countEachCategory[category]
+    }
+  }
+  )
+  console.log(frontmatter, 'frontmatter');
+
+
   // more code here
   return json({
     honeypotInputProps: honeypot.getInputProps(),
     user,
+    frontmatter,
+    categoriesWithCount,
     requestInfo: {
       hints: getHints(request),
       userPrefs: {

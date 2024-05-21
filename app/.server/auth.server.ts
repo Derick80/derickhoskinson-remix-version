@@ -3,7 +3,7 @@ import { prisma } from '~/.server/prisma.server'
 import { z } from 'zod'
 import { createCookieSessionStorage, Session } from '@remix-run/node'
 
-import type { Prisma, User } from '@prisma/client'
+import type { Prisma } from '@prisma/client'
 import { discordStrategy } from './strategies/discord'
 
 export const SESSION_ID_KEY: string = 'authSession'

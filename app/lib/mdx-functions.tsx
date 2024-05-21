@@ -17,8 +17,8 @@ export const CustomOl: React.FC<CustomListProps> = ({ children }) => {
   return <ol className='list-decimal list-inside pl-4'>{children}</ol>
 }
 
-export const CustomLi: React.FC<CustomListProps> = ({ children }) => {
-  return <li className='mb-2'>{children}</li>
+export const CustomLi = (props: { children: React.ReactNode }) => {
+  return <li className='text-base leading-7'>{props.children}</li>
 }
 
 interface CodeBlockProps {
@@ -56,7 +56,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ code, language }) => {
 
   return (
     <div className='relative w-full overflow-x-auto'>
-      <pre className='p-4 bg-gray-900 text-white rounded-md whitespace-pre-wrap'>
+      <pre className='p-2 bg-gray-900 text-white rounded-md whitespace-pre-wrap'>
         <code dangerouslySetInnerHTML={{ __html: highlightedCode }} />
       </pre>
     </div>
@@ -69,7 +69,7 @@ const Paragraph = (props: { children?: React.ReactNode }) => {
   }
 
   return (
-    <p className='text-base leading-7 [&:not(:first-child)]:mt-6' {...props} />
+    <p className='text-base leading- font-serif [&:not(:first-child)]:mt-6' {...props} />
   )
 }
 const BlogImage = ({
@@ -103,42 +103,6 @@ const BlogImage = ({
 const mdxComponents = {
   p: Paragraph,
   BlogImage,
-  h1: (props: { children?: React.ReactNode }) => (
-    <h1
-      className='font serif scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl text-primary'
-      tabIndex={-1}
-      {...props}
-    >
-      {props.children || ''}
-    </h1>
-  ),
-  h2: (props: { children?: React.ReactNode }) => (
-    <h2
-      className='croll-m-20 border-b border-primary pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0'
-      tabIndex={-1}
-      {...props}
-    >
-      {props.children || ''}
-    </h2>
-  ),
-  h3: (props: { children?: React.ReactNode }) => (
-    <h3
-      className='scroll-m-20 text-xl font-semibold tracking-tight'
-      tabIndex={-1}
-      {...props}
-    >
-      {props.children || ''}
-    </h3>
-  ),
-  h4: (props: { children?: React.ReactNode }) => (
-    <h4
-      className='text-lg font-semibold tracking-tighter'
-      tabIndex={-1}
-      {...props}
-    >
-      {props.children || ''}
-    </h4>
-  ),
   pre: (props: any) => {
     const { children } = props
     return (
@@ -150,7 +114,7 @@ const mdxComponents = {
   },
   ul: CustomUl,
   ol: CustomOl,
-  li: CustomLi
+  li: CustomLi,
 }
 
 declare global {
@@ -165,12 +129,16 @@ declare global {
 export function getMdxComponent(code: string) {
   const Component = mdxBundler.getMDXComponent(code)
 
-  function DCHMdxComponent({
-    components,
+  function DCHMdxComponent ({
+      components,
     ...rest
   }: Parameters<typeof Component>['0']) {
     return (
-      <Component components={{ ...mdxComponents, ...components }} {...rest} />
+      <Component
+              // @ts-expect-error the types are not correct
+        components={{ ...mdxComponents, ...components }}
+        {...rest}
+      />
     )
   }
 

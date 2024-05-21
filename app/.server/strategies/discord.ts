@@ -1,6 +1,5 @@
 import { DiscordStrategy } from 'remix-auth-discord'
 import { createUser, getAccount } from '../auth.server'
-import { getEnv } from '../env.server'
 
 const discordClientId = process.env.DISCORD_CLIENT_ID
 const discordClientSecret = process.env.DISCORD_CLIENT_SECRET
@@ -38,7 +37,6 @@ export const discordStrategy = new DiscordStrategy(
         userId: account.user.id,
         username: account.user.username || '',
         email: account.user.email,
-        avatarUrl: account.user.avatarUrl || '',
         role: account.user.role || 'user',
         provider: account.provider,
         providerId: account.providerAccountId,

@@ -1,12 +1,15 @@
 import type { Config } from "tailwindcss"
 
+
+
 const config = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
+    './pages/**/*.{ts,tsx,mdx}',
+    './components/**/*.{ts,tsxm,mdx}',
+    './app/**/*.{ts,tsx,mdx}',
+    './src/**/*.{ts,tsx.,mdx}',
+
 	],
   prefix: "",
   theme: {
@@ -72,11 +75,12 @@ const config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
- fontFamily: {
-        'serif': ['Merriweather', 'serif'],
-        'sans': ['Open Sans', 'sans-serif'],
+      fontFamily: {
+       display : ['"Raleway"', "sans-serif"],
+        headings: ['"PlayFair"', "serif"],
       },
     },
+
   },
   plugins: [require("tailwindcss-animate"),require('@tailwindcss/typography')],
 } satisfies Config
