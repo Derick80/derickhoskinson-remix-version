@@ -10,7 +10,7 @@
     "build": "remix vite:build" ,
     "dev": "remix vite:dev",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
-    "start": "remix-serve ./build/server/index.js",
+    "start": "remix-serve ./build/server/index.js && npx prisma db push",
     "typecheck": "tsc",
     "format": "prettier \"app/**/*.ts\" \"app/**/*.tsx\" --write . ",
     "build:icons": "icons build -i ./svg-icons/lucide -o ./app/components/icons",
