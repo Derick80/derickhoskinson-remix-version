@@ -40,13 +40,16 @@ swap_size = 1024
     restart_limit = 0
 
  [[services.http_checks]]
+    port = 3000
+    "type" = "http"
     interval = "10s"
     timeout = "2s"
     grace_period = "5s"
     restart_limit = 0
-    method = "get"
+    method = "GET"
     path = "/healthchecks"
     protocol = "http"
+    tls_skip_verify = false
 
 [env]
   FLY_SCALE_TO_ZERO = "1h"
@@ -55,13 +58,13 @@ swap_size = 1024
 
 [deploy]
   release_command = 'npx prisma migrate deploy'
-  task_commands = ["npx prisma generate && npx prisma db push"]
+  task_commands = ['npx prisma migrate deploy', 'npx prisma generate']
 
 [http_service]
   internal_port = 3000
   force_https = true
   auto_stop_machines = true
   auto_start_machines = true
-  min_machines_running = 0
+  min_machines_running = 1
   processes = ['app']
 

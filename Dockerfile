@@ -80,7 +80,7 @@ RUN apt-get update -qq && \
 
 # Generate Prisma Client ()I need this here)
 COPY --link prisma .
-RUN npx prisma db push && npx prisma generate
+RUN npx prisma generate
 
 # Copy built application
 COPY --from=build /app /app
