@@ -55,9 +55,9 @@ RUN apt-get update -qq && \
 COPY --link package-lock.json package.json ./
 RUN npm ci --include=dev
 
-# Generate Prisma Client
-COPY --link prisma .
-RUN npx prisma generate
+# # Generate Prisma Client
+# COPY --link prisma .
+# RUN npx prisma generate
 
 # Copy application code
 COPY --link . .
@@ -78,7 +78,7 @@ RUN apt-get update -qq && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 
-# Generate Prisma Client
+# Generate Prisma Client ()I need this here)
 COPY --link prisma .
 RUN npx prisma generate
 
