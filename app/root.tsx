@@ -22,10 +22,7 @@ import stylesheet from '~/tailwind.css?url'
 import { honeypot } from './.server/honeypot.server'
 import { HoneypotInputs, HoneypotProvider } from 'remix-utils/honeypot/react'
 import { isAuthenticated } from './.server/auth.server'
-import {
-  SunIcon,
-  MoonIcon,
-  LaptopIcon} from '@radix-ui/react-icons'
+import { SunIcon, MoonIcon, LaptopIcon } from '@radix-ui/react-icons'
 import { z } from 'zod'
 import { getTheme, setTheme, Theme } from './.server/theme.server'
 import { ClientHintCheck, getHints, useHints } from './lib/client-hints'
@@ -124,26 +121,21 @@ function App() {
 
   return (
     <Document nonce={nonce} theme={theme}>
-      <div className='flex h-screen flex-col border-4 border-pink-500 justify-between'>
-        <header className='border-2 border-blue-500 px-0'>
-          <div className='flex flex-row items-center justify-between'>
+      <div className='flex h-full flex-col mx-auto max-w-3xl border-2 border-green-500'>
+        <header className='flex flex-row justify-between items-center px-0'>
+          <Icon name='apple'></Icon>
+
+          <NavigationBar />
+          <div className='flex gap-2'>
+            <Icon name='apple'></Icon>
             <ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />
-            <NavigationBar />
-            <div className='flex gap-2'>
-              <Icon name='apple'></Icon>
-              <ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />
-            </div>
           </div>
         </header>
-        <div className='flex-1 border-2 border-green-500'>
+        <div className='flex-1 min-h-screen border-2 border-green-500'>
           <Outlet />
         </div>
 
-        <div className='container flex justify-between pb-5'>
-
-                      <ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />
-
-        </div>
+        <div className='container flex justify-between pb-5'>footer things</div>
       </div>
     </Document>
   )

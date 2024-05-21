@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:wght@400;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -56,4 +58,32 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@layer base {
+  h1 {
+    @apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl text-primary;
+  }
+  h2 {
+    @apply scroll-m-20 border-b border-primary pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0;
+  }
+  h3 {
+    @apply scroll-m-20 text-xl font-semibold tracking-tight;
+  }
+  p {
+    @apply text-base leading-7 [&:not(:first-child)]:mt-6;
+  }
+  h4 {
+    @apply text-lg font-semibold tracking-tighter;
+  }
+  h5 {
+    @apply text-xl font-bold;
+  }
+  h6 {
+    @apply text-lg font-semibold;
+  }
+}
+
+pre {
+  overflow-x: auto;
 }
