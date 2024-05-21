@@ -47,7 +47,7 @@ swap_size = 1024
 
 [deploy]
   release_command = 'npx prisma migrate deploy'
-  task_commands = ["npx prisma generate"]
+  task_commands = ["npx prisma generate && npx prisma db push"]
 
 [http_service]
   internal_port = 3000
