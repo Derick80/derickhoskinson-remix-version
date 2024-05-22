@@ -1,6 +1,6 @@
 // create a loader that checks the login status
 
-import { json, LoaderFunctionArgs } from '@remix-run/node'
+import { json, LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { Form } from '@remix-run/react'
 import { HoneypotInputs } from 'remix-utils/honeypot/react'
 import { sessionStorage } from '~/.server/auth.server'
@@ -28,9 +28,11 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return json({})
 }
 
+export const meta: MetaFunction = () => [{ title: 'Sign Up for an accoutn at DerickHoskinson.com' }]
+
 export default function Login() {
   return (
-    <div className='border-2 border-yellow-600 flex flex-col h-full p-10 items-center'>
+    <div className='flex flex-col h-full p-10 items-center'>
       <Card className='w-full md:w-1/2 h-auto flex flex-col justify-between items-center'>
         <CardHeader title='Login'>
           <CardTitle> Login or Register</CardTitle>

@@ -8,7 +8,7 @@ const TContainer = () => {
     setCount((count) => count + 1)
   }
   return (
-    <div className='flex w-full flex- items-center justify-center border-2 border-purple-500 text-red-500'>
+    <div className='flex w-full flex- items-center justify-center'>
       things here
       <Button onClick={handleClick}>Click me</Button>
       {count}

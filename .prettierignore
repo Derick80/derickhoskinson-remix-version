@@ -37,4 +37,5 @@ fly.toml
 ./github
 *.mdx
 /app/components/ui
+sly.json
 

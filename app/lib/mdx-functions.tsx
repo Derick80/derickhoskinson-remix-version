@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 import * as mdxBundler from 'mdx-bundler/client/index.js'
 import React from 'react'
-import { getImageBuilder, getImgProps } from '~/images'
+import { getImageBuilder, getImgProps } from '~/lib/images'
 
 import { getHighlighter } from 'shiki'
 
@@ -69,7 +69,10 @@ const Paragraph = (props: { children?: React.ReactNode }) => {
   }
 
   return (
-    <p className='text-base leading- font-serif [&:not(:first-child)]:mt-6' {...props} />
+    <p
+      className='text-base leading- font-serif [&:not(:first-child)]:mt-6'
+      {...props}
+    />
   )
 }
 const BlogImage = ({
@@ -114,7 +117,7 @@ const mdxComponents = {
   },
   ul: CustomUl,
   ol: CustomOl,
-  li: CustomLi,
+  li: CustomLi
 }
 
 declare global {
@@ -129,13 +132,13 @@ declare global {
 export function getMdxComponent(code: string) {
   const Component = mdxBundler.getMDXComponent(code)
 
-  function DCHMdxComponent ({
-      components,
+  function DCHMdxComponent({
+    components,
     ...rest
   }: Parameters<typeof Component>['0']) {
     return (
       <Component
-              // @ts-expect-error the types are not correct
+        // @ts-expect-error the types are not correct
         components={{ ...mdxComponents, ...components }}
         {...rest}
       />

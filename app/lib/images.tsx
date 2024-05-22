@@ -3,6 +3,15 @@ import { buildImageUrl, setConfig } from 'cloudinary-build-url'
 import clsx from 'clsx'
 import { type CSSProperties } from 'react'
 
+  const imageWidths = [320, 400, 420, 480, 640, 800, 840, 960, 1280];
+  const imageSizesPerViewport = [
+    '(min-width: 1280px) 640px',
+    '((min-width: 1024px) and (max-width: 1279px)) 480px',
+    '((min-width: 640px) and (max-width: 1023px)) 420px',
+    '100vw',
+  ];
+
+
 setConfig({
   cloudName: 'dch-photo'
 })

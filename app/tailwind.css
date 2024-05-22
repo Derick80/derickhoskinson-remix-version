@@ -1,9 +1,81 @@
 @import './fonts/fonts.css';
 
+/* https://www.radix-ui.com/colors/custom */
+.dark,
+.dark-theme {
+  --green-1: #08140f;
+  --green-2: #091c15;
+  --green-3: #00301e;
+  --green-4: #003e28;
+  --green-5: #004c32;
+  --green-6: #005b3e;
+  --green-7: #006f4c;
+  --green-8: #00865d;
+  --green-9: #2fffbf;
+  --green-10: #10f5b5;
+  --green-11: #00dfa1;
+  --green-12: #a4fed8;
+
+  --green-a1: #00d10004;
+  --green-a2: #00fb670c;
+  --green-a3: #00fa7322;
+  --green-a4: #00fc8931;
+  --green-a5: #00fd9540;
+  --green-a6: #00fda050;
+  --green-a7: #00ffa665;
+  --green-a8: #00fdab7e;
+  --green-a9: #2fffbf;
+  --green-a10: #10febbf5;
+  --green-a11: #00ffb8dd;
+  --green-a12: #a5ffd9fe;
+
+  --green-contrast: #0b281d;
+  --green-surface: #02271980;
+  --green-indicator: #2fffbf;
+  --green-track: #2fffbf;
+}
+
+@supports (color: color(display-p3 1 1 1)) {
+  @media (color-gamut: p3) {
+    .dark,
+    .dark-theme {
+      --green-1: oklch(17.8% 0.02 165.8);
+      --green-2: oklch(20.8% 0.03 165.8);
+      --green-3: oklch(26.8% 0.068 165.8);
+      --green-4: oklch(31.3% 0.102 165.8);
+      --green-5: oklch(35.9% 0.111 165.8);
+      --green-6: oklch(41% 0.117 165.8);
+      --green-7: oklch(47.1% 0.128 165.8);
+      --green-8: oklch(54% 0.15 165.8);
+      --green-9: oklch(89% 0.177 165.8);
+      --green-10: oklch(86% 0.177 165.8);
+      --green-11: oklch(79.5% 0.177 165.8);
+      --green-12: oklch(93% 0.102 165.8);
+
+      --green-a1: color(display-p3 0 0.973 0 / 0.013);
+      --green-a2: color(display-p3 0 0.988 0.404 / 0.047);
+      --green-a3: color(display-p3 0.039 0.996 0.502 / 0.127);
+      --green-a4: color(display-p3 0.196 1 0.6 / 0.185);
+      --green-a5: color(display-p3 0.278 1 0.631 / 0.244);
+      --green-a6: color(display-p3 0.325 1 0.671 / 0.307);
+      --green-a7: color(display-p3 0.373 1 0.698 / 0.387);
+      --green-a8: color(display-p3 0.4 1 0.706 / 0.484);
+      --green-a9: color(display-p3 0.494 1 0.776 / 0.984);
+      --green-a10: color(display-p3 0.467 1 0.765 / 0.942);
+      --green-a11: color(display-p3 0.455 1 0.749 / 0.853);
+      --green-a12: color(display-p3 0.729 1 0.867 / 0.988);
+
+      --green-contrast: #0b281d;
+      --green-surface: color(display-p3 0.043 0.149 0.094 / 0.5);
+      --green-indicator: oklch(89% 0.177 165.8);
+      --green-track: oklch(89% 0.177 165.8);
+    }
+  }
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -13,14 +85,30 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
     --primary: 346.8 77.2% 49.8%;
+    --primary-hover: 346.8 77.2% 59.8%; /* Increase lightness for hover */
+    --primary-focus: 346.8 87.2% 49.8%; /* Increase saturation for focus */
+    --primary-active: 346.8 77.2% 39.8%; /* Decrease lightness for active */
+    --primary-disabled: 346.8 37.2% 79.8%; /* Decrease saturation and lightness for disabled */
     --primary-foreground: 355.7 100% 97.3%;
     --secondary: 240 4.8% 95.9%;
+    --secondary-hover: 240 4.8% 85.9%;
+    --secondary-focus: 240 14.8% 95.9%;
+    --secondary-active: 240 4.8% 75.9%;
+    --secondary-disabled: 240 2.8% 97.9%;
     --secondary-foreground: 240 5.9% 10%;
     --muted: 240 4.8% 95.9%;
     --muted-foreground: 240 3.8% 46.1%;
     --accent: 240 4.8% 95.9%;
+    --accent-hover: 240 4.8% 85.9%;
+    --accent-focus: 240 14.8% 95.9%;
+    --accent-active: 240 4.8% 75.9%;
+    --accent-disabled: 240 2.8% 97.9%;
     --accent-foreground: 240 5.9% 10%;
     --destructive: 0 84.2% 60.2%;
+    --destructive-hover: 0 84.2% 70.2%;
+    --destructive-focus: 0 94.2% 60.2%;
+    --destructive-active: 0 84.2% 50.2%;
+    --destructive-disabled: 0 44.2% 80.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
@@ -36,31 +124,51 @@
     --popover: 0 0% 9%;
     --popover-foreground: 0 0% 95%;
     --primary: 346.8 77.2% 49.8%;
+    --primary-hover: 346.8 77.2% 59.8%;
+    --primary-focus: 346.8 87.2% 49.8%;
+    --primary-active: 346.8 77.2% 39.8%;
+    --primary-disabled: 346.8 37.2% 79.8%;
     --primary-foreground: 355.7 100% 97.3%;
     --secondary: 240 3.7% 15.9%;
+    --secondary-hover: 240 3.7% 25.9%;
+    --secondary-focus: 240 13.7% 15.9%;
+    --secondary-active: 240 3.7% 5.9%;
+    --secondary-disabled: 240 1.7% 35.9%;
     --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 15%;
     --muted-foreground: 240 5% 64.9%;
     --accent: 12 6.5% 15.1%;
+    --accent-hover: 12 6.5% 25.1%;
+    --accent-focus: 12 16.5% 15.1%;
+    --accent-active: 12 6.5% 5.1%;
+    --accent-disabled: 12 3.5% 35.1%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
+    --destructive-hover: 0 62.8% 40.6%;
+    --destructive-focus: 0 72.8% 30.6%;
+    --destructive-active: 0 62.8% 20.6%;
+    --destructive-disabled: 0 32.8% 50.6%;
     --destructive-foreground: 0 85.7% 97.3%;
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 346.8 77.2% 49.8%;
   }
 }
-
 @layer base {
   * {
-    @apply border-border
+    @apply border-border;
   }
 
-   body {
+  body {
     @apply bg-background text-foreground font-display antialiased;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-headings;
   }
 
@@ -89,10 +197,10 @@
   }
 
   p {
-   @apply text-base leading-relaxed; /* Adjusted line-height */
+    @apply text-base leading-relaxed; /* Adjusted line-height */
     margin-top: 1.5em; /* Ensures consistent spacing between paragraphs */
   }
-  }
+}
 
 pre {
   @apply overflow-x-auto;

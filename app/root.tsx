@@ -2,7 +2,8 @@ import {
   ActionFunctionArgs,
   json,
   LinksFunction,
-  LoaderFunctionArgs
+  LoaderFunctionArgs,
+  MetaFunction
 } from '@remix-run/node'
 import {
   Links,
@@ -33,37 +34,45 @@ import { GeneralErrorBoundary } from './components/error-boundry'
 import { getEnv } from './.server/env.server'
 import { Icon } from './components/icon-component'
 import { getDirectoryFrontMatter } from './.server/mdx.server'
-
+import { AppRouteHandle } from './lib/types'
+import Breadcrumbs from './components/layout/breadcrumbs'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './components/ui/tooltip'
 
 export const links: LinksFunction = () => [
-
-  // preconnect to Google Fonts and the stylesheets
-  { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
-  { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&family=Slabo+27px&display=swap', crossOrigin: 'anonymous' },
+  { rel: 'manifest', href: '/manifest.webmanifest' },
+  {
+    rel: 'preconnect',
+    href: 'https://fonts.gstatic.com',
+    crossOrigin: 'anonymous'
+  },
+  {
+    rel: 'stylesheet',
+    href: 'https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&family=Slabo+27px&display=swap',
+    crossOrigin: 'anonymous'
+  },
   { rel: 'stylesheet', href: stylesheet }
-
 ]
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const user = await isAuthenticated(request)
 
-const frontmatter = await getDirectoryFrontMatter('blog')
+  const frontmatter = await getDirectoryFrontMatter('blog')
   const categories = frontmatter.map((post) => post.categories).flat()
   const uniqueCategories = [...new Set(categories)]
-  const countEachCategory: { [key: string]: number } = categories.reduce((acc, category) => {
-    acc[category] = acc[category] ? acc[category] + 1 : 1
-    return acc
-  }, {} as { [key: string]: number })
+  const countEachCategory: { [key: string]: number } = categories.reduce(
+    (acc, category) => {
+      acc[category] = acc[category] ? acc[category] + 1 : 1
+      return acc
+    },
+    {} as { [key: string]: number }
+  )
   // combine uniqueCategories and countEachCategory into an object
   const categoriesWithCount = uniqueCategories.map((category) => {
     return {
       category,
       count: countEachCategory[category]
     }
-  }
-  )
-  console.log(frontmatter, 'frontmatter');
-
+  })
 
   // more code here
   return json({
@@ -81,6 +90,31 @@ const frontmatter = await getDirectoryFrontMatter('blog')
   })
 }
 
+// export function shouldRevalidate() {
+//   // only need the root loader to run once, no need to revalidate
+//   return false
+// }
+
+// this is preobably broken
+
+export const meta: MetaFunction<typeof loader> = () => {
+  const appName = 'DerickHoskinson.com'
+  const title = 'DerickHoskinson.com'
+  const description = 'DerickHoskinson.com'
+
+  return [
+    { title },
+    { name: 'description', content: description },
+    { property: 'og:title', content: title },
+    { property: 'og:description', content: description },
+    { name: 'application-name', content: appName },
+    { name: 'apple-mobile-web-app-title', content: appName }
+  ]
+}
+
+export const handle: AppRouteHandle = {
+  breadcrumb: () => ({ title: 'DerickHoskinson.com' })
+}
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData()
   try {
@@ -148,8 +182,8 @@ function App() {
 
   return (
     <Document nonce={nonce} theme={theme}>
-      <div className='flex h-full flex-col mx-auto max-w-3xl border-2 border-green-500'>
-        <header className='flex flex-row justify-between items-center px-0'>
+      <div className='flex h-full flex-col gap-6 mx-auto max-w-3xl'>
+        <header className='flex flex-row bg-accent justify-between items-center px-0'>
           <Icon name='apple'></Icon>
 
           <NavigationBar />
@@ -158,7 +192,9 @@ function App() {
             <ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />
           </div>
         </header>
-        <div className='flex-1 min-h-screen border-2 border-green-500'>
+        <Breadcrumbs />
+
+        <div className='flex-1 min-h-screen'>
           <Outlet />
         </div>
 
@@ -171,9 +207,11 @@ export default function AppWithProviders() {
   const data = useLoaderData<typeof loader>()
 
   return (
+    <TooltipProvider>
     <HoneypotProvider {...data.honeypotInputProps}>
       <App />
     </HoneypotProvider>
+    </TooltipProvider>
   )
 }
 
@@ -240,14 +278,23 @@ function ThemeSwitch({ userPreference }: { userPreference?: Theme | null }) {
       <HoneypotInputs label='Please leave this field blank' />
 
       <input type='hidden' name='theme' value={nextMode} />
-      <div className='flex gap-2'>
+      <Tooltip>
+        <TooltipTrigger>
+ <div className='flex gap-2'>
         <button
           type='submit'
           className='flex h-8 w-8 cursor-pointer items-center justify-center'
         >
           {modeLabel[mode]}
         </button>
-      </div>
+          </div>
+<TooltipContent>
+                                <span className='text-sm text-gray-500'>
+                                    Click to change the theme
+                                </span>
+                            </TooltipContent>
+        </TooltipTrigger>
+     </Tooltip>
     </fetcher.Form>
   )
 }
@@ -256,7 +303,7 @@ function ThemeSwitch({ userPreference }: { userPreference?: Theme | null }) {
 
 const NavigationBar = () => {
   return (
-    <nav className='flex justify-between border-2 border-red-500'>
+    <nav className='flex justify-between p-1'>
       <ul
         className='flex gap-4
             items-center
@@ -294,7 +341,7 @@ export const menuItems: MenuItem[] = [
     label: 'Home',
     title: 'Click to go to the home page',
     path: '/',
-    icon: <Icon name='book'></Icon>
+    icon: <Icon name='castle'></Icon>
   },
   {
     label: 'Blog',
@@ -333,13 +380,5 @@ export const menuItems: MenuItem[] = [
 
 // copied and pasted this from another project
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const ErrorBoundary = () => {
-  // the nonce doesn't rely on the loader so we can access that
-  const nonce = useNonce()
 
-  return (
-    <Document nonce={nonce}>
-      <GeneralErrorBoundary />
-    </Document>
-  )
-}
+

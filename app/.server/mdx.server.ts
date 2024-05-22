@@ -66,7 +66,6 @@ function removePreContainerDivs() {
   }
 }
 
-
 const remarkPlugins: U.PluggableList = [
   remarkGfm
   // remarkSlug,
@@ -93,7 +92,7 @@ const getMDXFileContent = async (slug: string) => {
     source,
     cwd: `${process.cwd()}/app/components/ui/`,
     mdxOptions(options) {
-      (options.remarkPlugins = [
+      ;(options.remarkPlugins = [
         ...(options.remarkPlugins ?? []),
         remarkSlug,
         remarkGfm,
@@ -129,7 +128,7 @@ const getDirectoryFrontMatter = async (directory: string) => {
     // Use gray-matter to parse the post metadata section
     const matterResult = matter(fileContents)
 
-    const matterData = matterResult.data as FrontMatter & {content: string}
+    const matterData = matterResult.data as FrontMatter & { content: string }
 
     matterData.published = matterData.published ?? false
     matterData.slug = slug
@@ -158,7 +157,7 @@ const getMDXPage = async (pagename: string) => {
   const data = await bundleMDX({
     source,
     mdxOptions(options) {
-      (options.remarkPlugins = [
+      ;(options.remarkPlugins = [
         ...(options.remarkPlugins ?? []),
         remarkSlug,
         [remarkAutolinkHeadings, { behavior: 'wrap' }],

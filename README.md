@@ -14,10 +14,10 @@ nvm use node v20.11.0
 ## Component Reference
 
 - Accordian - <https://github.com/AllanSimoyi/PersonalWebsite/blob/main/app/core/components/AccordionItem.tsx>
-- Post Editor - [TipTap](https://tiptap.dev/)
 - Resizeable  image component [reference](https://github.com/Habib-Shahzad/tiptap-resizable-image/tree/main/src/components)
 - Blog Category Filter
   - [reference](https://github.com/kentcdodds/kentcdodds.com/blob/main/app/routes/blog.tsx)
+  - https://github.com/wKovacs64/drinks/blob/dev/app/navigation/breadcrumbs.tsx
 
 ## Database Setup
 
