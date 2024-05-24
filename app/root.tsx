@@ -36,7 +36,13 @@ import { Icon } from './components/icon-component'
 import { getDirectoryFrontMatter } from './.server/mdx.server'
 import { AppRouteHandle } from './lib/types'
 import Breadcrumbs from './components/layout/breadcrumbs'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './components/ui/tooltip'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from './components/ui/tooltip'
+import { Toaster } from './components/ui/toaster'
 
 export const links: LinksFunction = () => [
   { rel: 'manifest', href: '/manifest.webmanifest' },
@@ -163,6 +169,7 @@ function Document({
       </head>
       <body className='bg-background text-foreground'>
         {children}
+        <Toaster />
         <script
           nonce={nonce}
           dangerouslySetInnerHTML={{
@@ -208,9 +215,9 @@ export default function AppWithProviders() {
 
   return (
     <TooltipProvider>
-    <HoneypotProvider {...data.honeypotInputProps}>
-      <App />
-    </HoneypotProvider>
+      <HoneypotProvider {...data.honeypotInputProps}>
+        <App />
+      </HoneypotProvider>
     </TooltipProvider>
   )
 }
@@ -278,23 +285,13 @@ function ThemeSwitch({ userPreference }: { userPreference?: Theme | null }) {
       <HoneypotInputs label='Please leave this field blank' />
 
       <input type='hidden' name='theme' value={nextMode} />
-      <Tooltip>
-        <TooltipTrigger>
- <div className='flex gap-2'>
-        <button
-          type='submit'
-          className='flex h-8 w-8 cursor-pointer items-center justify-center'
-        >
-          {modeLabel[mode]}
-        </button>
-          </div>
-<TooltipContent>
-                                <span className='text-sm text-gray-500'>
-                                    Click to change the theme
-                                </span>
-                            </TooltipContent>
-        </TooltipTrigger>
-     </Tooltip>
+
+      <button
+        type='submit'
+        className='flex h-8 w-8 cursor-pointer items-center justify-center'
+      >
+        {modeLabel[mode]}
+      </button>
     </fetcher.Form>
   )
 }
@@ -304,11 +301,7 @@ function ThemeSwitch({ userPreference }: { userPreference?: Theme | null }) {
 const NavigationBar = () => {
   return (
     <nav className='flex justify-between p-1'>
-      <ul
-        className='flex gap-4
-            items-center
-          '
-      >
+      <ul className='flex gap-4 items-center'>
         {menuItems.map((item) => (
           <li key={item.label}>
             <NavLink
@@ -378,7 +371,9 @@ export const menuItems: MenuItem[] = [
 
 /* End Navigation */
 
+export function ErrorBoundary({ error }: { error: Error }) {
+  return <GeneralErrorBoundary error={error} />
+}
+
 // copied and pasted this from another project
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-
-

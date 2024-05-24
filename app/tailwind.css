@@ -1,81 +1,8 @@
 @import './fonts/fonts.css';
-
-/* https://www.radix-ui.com/colors/custom */
-.dark,
-.dark-theme {
-  --green-1: #08140f;
-  --green-2: #091c15;
-  --green-3: #00301e;
-  --green-4: #003e28;
-  --green-5: #004c32;
-  --green-6: #005b3e;
-  --green-7: #006f4c;
-  --green-8: #00865d;
-  --green-9: #2fffbf;
-  --green-10: #10f5b5;
-  --green-11: #00dfa1;
-  --green-12: #a4fed8;
-
-  --green-a1: #00d10004;
-  --green-a2: #00fb670c;
-  --green-a3: #00fa7322;
-  --green-a4: #00fc8931;
-  --green-a5: #00fd9540;
-  --green-a6: #00fda050;
-  --green-a7: #00ffa665;
-  --green-a8: #00fdab7e;
-  --green-a9: #2fffbf;
-  --green-a10: #10febbf5;
-  --green-a11: #00ffb8dd;
-  --green-a12: #a5ffd9fe;
-
-  --green-contrast: #0b281d;
-  --green-surface: #02271980;
-  --green-indicator: #2fffbf;
-  --green-track: #2fffbf;
-}
-
-@supports (color: color(display-p3 1 1 1)) {
-  @media (color-gamut: p3) {
-    .dark,
-    .dark-theme {
-      --green-1: oklch(17.8% 0.02 165.8);
-      --green-2: oklch(20.8% 0.03 165.8);
-      --green-3: oklch(26.8% 0.068 165.8);
-      --green-4: oklch(31.3% 0.102 165.8);
-      --green-5: oklch(35.9% 0.111 165.8);
-      --green-6: oklch(41% 0.117 165.8);
-      --green-7: oklch(47.1% 0.128 165.8);
-      --green-8: oklch(54% 0.15 165.8);
-      --green-9: oklch(89% 0.177 165.8);
-      --green-10: oklch(86% 0.177 165.8);
-      --green-11: oklch(79.5% 0.177 165.8);
-      --green-12: oklch(93% 0.102 165.8);
-
-      --green-a1: color(display-p3 0 0.973 0 / 0.013);
-      --green-a2: color(display-p3 0 0.988 0.404 / 0.047);
-      --green-a3: color(display-p3 0.039 0.996 0.502 / 0.127);
-      --green-a4: color(display-p3 0.196 1 0.6 / 0.185);
-      --green-a5: color(display-p3 0.278 1 0.631 / 0.244);
-      --green-a6: color(display-p3 0.325 1 0.671 / 0.307);
-      --green-a7: color(display-p3 0.373 1 0.698 / 0.387);
-      --green-a8: color(display-p3 0.4 1 0.706 / 0.484);
-      --green-a9: color(display-p3 0.494 1 0.776 / 0.984);
-      --green-a10: color(display-p3 0.467 1 0.765 / 0.942);
-      --green-a11: color(display-p3 0.455 1 0.749 / 0.853);
-      --green-a12: color(display-p3 0.729 1 0.867 / 0.988);
-
-      --green-contrast: #0b281d;
-      --green-surface: color(display-p3 0.043 0.149 0.094 / 0.5);
-      --green-indicator: oklch(89% 0.177 165.8);
-      --green-track: oklch(89% 0.177 165.8);
-    }
-  }
-}
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -162,46 +89,12 @@
   body {
     @apply bg-background text-foreground font-display antialiased;
   }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-headings;
+  .hljs {
+    @apply p-4 rounded-md overflow-auto relative;
   }
 
-  h1 {
-    @apply text-primary text-4xl font-extrabold tracking-tight lg:text-5xl;
+  .hljs-subst {
+    @apply text-black;
   }
-
-  h2 {
-    @apply border-b border-primary pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0;
-  }
-
-  h3 {
-    @apply text-xl font-semibold tracking-tight;
-  }
-
-  h4 {
-    @apply text-base font-semibold tracking-tighter;
-  }
-
-  h5 {
-    @apply text-xl font-bold;
-  }
-
-  h6 {
-    @apply text-lg font-semibold;
-  }
-
-  p {
-    @apply text-base leading-relaxed; /* Adjusted line-height */
-    margin-top: 1.5em; /* Ensures consistent spacing between paragraphs */
-  }
-}
-
-pre {
-  @apply overflow-x-auto;
-}
+} /* Custom Tailwind CSS styles */
+/* NOT SURE I NEED THIS */

@@ -1,10 +1,10 @@
 import { AppRouteHandle } from '~/lib/types'
-import { getLoaderDataForHandle } from '~/components/layout/breadcrumbs'
-import { mergeMeta } from '~/lib/meta'
 import { notFoundMeta } from './$'
 import { useLoaderData } from '@remix-run/react'
 import { z } from 'zod'
 import { json, LoaderFunctionArgs } from '@remix-run/node'
+import { getLoaderDataForHandle } from '~/components/layout/breadcrumbs'
+import { mergeMeta } from '~/lib/meta'
 import { GeneralErrorBoundary } from '~/components/error-boundry'
 
 const categorySlugSchema = z.object({
@@ -12,7 +12,8 @@ const categorySlugSchema = z.object({
 })
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
-  const { category } = categorySlugSchema.parse(params)
+  const category = categorySlugSchema.parse(params).category
+
   if (!category) throw new Error('No data found')
 
   return json({
@@ -20,25 +21,26 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   })
 }
 
-// export const handle: AppRouteHandle = {
-//   breadcrumb: (matches) => {
-//     const data = getLoaderDataForHandle<typeof loader>('routes/blog_/categories_.$category', matches)
-//     return {
-//       title: data ? (
-//         <div className='inline-flex gap-2'>
-//           <span>{matches.at(-1)?.params.category}</span>
-//           <span>( {data?.category} )</span>
-//         </div>
-//       ) : (
-//         'Not Found'
-//       )
-//     }
-//   }
-// }
+export const handle: AppRouteHandle = {
+  breadcrumb: (matches) => {
+    const data = getLoaderDataForHandle<typeof loader>('routes/root', matches)
+    return {
+      title: data ? (
+        <div className='inline-flex gap-2'>
+          <span>{matches.at(-1)?.params.category}</span>
+          <span>( {data?.category} )</span>
+        </div>
+      ) : (
+        'Not Found'
+      )
+    }
+  }
+}
 
 export const meta = mergeMeta<typeof loader>(({ data, params }) => {
   if (!data) return notFoundMeta
-  const category = params.category
+  const { category } = categorySlugSchema.parse(params)
+
   return [
     { title: `Posts with categories: ${category}` },
     {

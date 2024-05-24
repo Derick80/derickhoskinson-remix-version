@@ -7,7 +7,9 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   return generateSitemap(request, serverBuild.routes, {
     siteUrl: getDomainUrl(request),
     headers: {
-      'Cache-Control': `public, max-age=${60 * 5}`
+      'Cache-Control': `public, max-age=${
+        60 * 60 * 24 * 7 // 1 week
+      }` // 5 minutes
     }
   })
 }

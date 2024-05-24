@@ -1,6 +1,7 @@
 import { json } from '@remix-run/node'
 import { Link, Outlet, useLoaderData } from '@remix-run/react'
 import { FrontMatter, getDirectoryFrontMatter } from '~/.server/mdx.server'
+import { GeneralErrorBoundary } from '~/components/error-boundry'
 import { Caption, Muted } from '~/components/layout/typography'
 import { Badge } from '~/components/ui/badge'
 import { AppRouteHandle } from '~/lib/types'
@@ -85,5 +86,24 @@ const PostPreviews = (frontmatter: FrontMatter) => {
         </div>
       </div>
     </article>
+  )
+}
+
+export function ErrorBoundary() {
+  return (
+    <GeneralErrorBoundary
+      statusHandlers={{
+        400: ({ error }) => (
+          <p>
+            {error.status} {error.data}
+          </p>
+        ),
+        404: ({ error }) => (
+          <p>
+            {error.status} {error.data}
+          </p>
+        )
+      }}
+    />
   )
 }

@@ -1,6 +1,7 @@
 import { json } from '@remix-run/node'
-import { getMDXPage } from '~/.server/mdx.server'
 import { useLoaderData } from '@remix-run/react'
+import { getMDXPage } from '~/.server/mdx.server'
+import { GeneralErrorBoundary } from '~/components/error-boundry'
 import { useMdxComponent } from '~/lib/mdx-functions'
 import { AppRouteHandle } from '~/lib/types'
 
@@ -20,5 +21,24 @@ export default function AboutRoute() {
     <div className='flex flex-col'>
       <Component />
     </div>
+  )
+}
+
+export function ErrorBoundary() {
+  return (
+    <GeneralErrorBoundary
+      statusHandlers={{
+        400: ({ error }) => (
+          <p>
+            {error.status} {error.data}
+          </p>
+        ),
+        404: ({ error }) => (
+          <p>
+            {error.status} {error.data}
+          </p>
+        )
+      }}
+    />
   )
 }

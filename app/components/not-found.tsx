@@ -16,8 +16,10 @@ export default function NotFound() {
         to='/'
         className='drinks-focusable border-b border-solid pb-1 hover:shadow-[inset_0_-2px_0_0] focus-visible:shadow-[inset_0_-2px_0_0] md:text-xl'
       >
-        Back to Drinks
+        Back Home
       </Link>
     </div>
   )
 }
+
+// need to make this my own

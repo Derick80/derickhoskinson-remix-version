@@ -13,7 +13,6 @@ import {
   CardHeader,
   CardTitle
 } from '~/components/ui/card'
-import famPhoto from '/family_dl_thwxot.avif'
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const authSession = await sessionStorage.getSession(
@@ -28,7 +27,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return json({})
 }
 
-export const meta: MetaFunction = () => [{ title: 'Sign Up for an accoutn at DerickHoskinson.com' }]
+export const meta: MetaFunction = () => [
+  { title: 'Sign Up for an accoutn at DerickHoskinson.com' }
+]
 
 export default function Login() {
   return (
@@ -42,7 +43,6 @@ export default function Login() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <img className='rounded-xl' src={famPhoto} alt='family photo' />
           <Form action='/discord' method='post'>
             <HoneypotInputs label='Please leave this field blank' />
             <p>Login with Discord</p>

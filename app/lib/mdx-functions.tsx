@@ -2,8 +2,11 @@
 import * as mdxBundler from 'mdx-bundler/client/index.js'
 import React from 'react'
 import { getImageBuilder, getImgProps } from '~/lib/images'
+import cn from 'classnames'
+import { CheckCircledIcon, CopyIcon } from '@radix-ui/react-icons'
+import { Button } from '~/components/ui/button'
+import { useToast } from '~/components/ui/use-toast'
 
-import { getHighlighter } from 'shiki'
 
 interface CustomListProps {
   children: React.ReactNode
@@ -19,48 +22,6 @@ export const CustomOl: React.FC<CustomListProps> = ({ children }) => {
 
 export const CustomLi = (props: { children: React.ReactNode }) => {
   return <li className='text-base leading-7'>{props.children}</li>
-}
-
-interface CodeBlockProps {
-  code: string
-  language: string
-}
-
-const CodeBlock: React.FC<CodeBlockProps> = ({ code, language }) => {
-  const [highlightedCode, setHighlightedCode] = React.useState<string>('')
-
-  React.useEffect(() => {
-    async function highlight() {
-      const highlighter = await getHighlighter({
-        themes: ['nord'],
-        langs: [
-          'javascript',
-          'typescript',
-          'bash',
-          'json',
-          'css',
-          'html',
-          'jsx',
-          'tsx'
-        ]
-      })
-      const html = highlighter.codeToHtml(code, {
-        lang: language,
-        theme: 'nord'
-      })
-      setHighlightedCode(html)
-    }
-
-    highlight()
-  }, [code, language])
-
-  return (
-    <div className='relative w-full overflow-x-auto'>
-      <pre className='p-2 bg-gray-900 text-white rounded-md whitespace-pre-wrap'>
-        <code dangerouslySetInnerHTML={{ __html: highlightedCode }} />
-      </pre>
-    </div>
-  )
 }
 
 const Paragraph = (props: { children?: React.ReactNode }) => {
@@ -103,21 +64,113 @@ const BlogImage = ({
     />
   )
 }
+type ElemProps = {
+  children?: React.ReactNode
+}
+export function H2(props: ElemProps): React.ReactElement {
+  return (
+    <h2 className='text-2xl my-6 dark:text-blue-400 text-blue-800' {...props}>
+      {props.children}
+    </h2>
+  )
+}
+
+type CodeBlockProps = {
+  className?: string
+  children?: React.ReactNode
+}
+
+function CodeBlock({ className, children, ...props }: CodeBlockProps) {
+  const [copied, setCopied] = React.useState(false)
+  const [isServer, setIsServer] = React.useState(true)
+  const { toast } = useToast()
+
+  React.useEffect(() => {
+    setIsServer(false)
+  }, [])
+
+  function handleCopied() {
+    window.navigator.clipboard.writeText(children as string)
+    setCopied(true)
+    toast({
+      title: 'Copied to clipboard'
+    })
+    window.setTimeout(() => {
+      setCopied(false)
+    }, 3000)
+  }
+
+  let language = null as string | null
+  if (className) {
+    language = className.replace(/language-/, 'typescript')
+  }
+  if (isServer) return null
+  return language ? (
+      <pre
+        className={cn(
+          'rounded-md p-4 overflow-x-auto relative',
+          className
+        )}
+        {...props}
+      >
+        {language ? (
+          <span className='text-xs absolute bottom-2 right-2'>{language}</span>
+        ) : null}
+
+        <Button
+          className='absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity'
+          variant='default'
+          size='sm'
+          onClick={handleCopied}
+        >
+          {copied ? (
+            <>
+              <CopyIcon className='mr-2 h-3 w-3' /> Copied!
+            </>
+          ) : (
+            <>
+              <CheckCircledIcon className='mr-2 h-3 w-3' /> Copy
+            </>
+          )}
+        </Button>
+
+        {children}
+      code
+      </pre>
+  ) : (
+    <pre
+      className={cn(
+        'rounded-md p-4 overflow-x-auto',
+        className
+      )}
+      {...props}
+    >
+      {children}
+      </pre>
+    )
+}
+
+
 const mdxComponents = {
   p: Paragraph,
   BlogImage,
-  pre: (props: any) => {
-    const { children } = props
-    return (
-      <CodeBlock
-        code={children.props.children}
-        language={children.props.className?.replace('language-', '')}
-      />
-    )
-  },
   ul: CustomUl,
   ol: CustomOl,
-  li: CustomLi
+  li: CustomLi,
+  a: (props: { href: string; children: React.ReactNode }) => {
+    return (
+      <a
+        className='hover:underline focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-opacity-50'
+        {...props}
+      >
+        <span className='sr-only'>{props.children}</span>
+      </a>
+    )
+  },
+  h1: (props: { children: React.ReactNode }) => {
+    return <h1 className='text-4xl font-bold'>{props.children}</h1>
+  },
+  h2: H2
 }
 
 declare global {

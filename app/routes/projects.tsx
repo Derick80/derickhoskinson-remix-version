@@ -10,9 +10,29 @@ export const handle: AppRouteHandle = {
 }
 
 import { useLoaderData } from '@remix-run/react'
+import { GeneralErrorBoundary } from '~/components/error-boundry'
 
 export default function ProjectRoute() {
   const data = useLoaderData<typeof loader>()
 
   return <div className=''></div>
+}
+
+export function ErrorBoundary() {
+  return (
+    <GeneralErrorBoundary
+      statusHandlers={{
+        400: ({ error }) => (
+          <p>
+            {error.status} {error.data}
+          </p>
+        ),
+        404: ({ error }) => (
+          <p>
+            {error.status} {error.data}
+          </p>
+        )
+      }}
+    />
+  )
 }

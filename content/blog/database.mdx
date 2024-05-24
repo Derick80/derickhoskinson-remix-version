@@ -9,7 +9,6 @@ categories: [database, cockroachdb, postgres]
 
 import { Button } from '~/components/ui/button'
 
-import { Button as BB } from './button.tsx'
 
 export const toc = [{depth: 1, value: 'The title'}]
 
@@ -21,15 +20,9 @@ import { TContainer } from '~/components/tst-container'
 
 ## Context
 
-<BB>hi</BB>
 
 
 
-<Button
-
->
-click me
-</Button>
 
 ### Test import button
 <TContainer />
@@ -42,7 +35,9 @@ VariantAlleles.com will use a distributed SQL database that is compatible with p
 
 VariantAlleles.com will use a distributed SQL database that is compatible with postgres to store data. The database is hosted on cockroachlabs cloud.
 ## Test out code blocks with syntax highlighting
-```ts
+
+```tsx
+
 function getImageBuilder (
     id: string,
     alt: string = '',
@@ -58,6 +53,7 @@ function imageBuilder (transformations?: TransformerOption) {
     imageBuilder.style = style
     return imageBuilder
 }
+
 ```
 ## Autolink literals
 
@@ -85,7 +81,7 @@ A note[^1]
 ### CockroachDB
 
 Connection string template:
-```
+```ts
 DATABASE_URL=postgresql://USER:PASSWORD.HOST:PORT/DATABASE?sslmode=verify-full
 ```
 

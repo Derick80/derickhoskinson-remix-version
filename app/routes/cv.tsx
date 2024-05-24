@@ -1,6 +1,7 @@
 import { type LoaderFunctionArgs, json } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { getMDXPage } from '~/.server/mdx.server'
+import { GeneralErrorBoundary } from '~/components/error-boundry'
 import { useMdxComponent } from '~/lib/mdx-functions'
 import { AppRouteHandle } from '~/lib/types'
 
@@ -21,5 +22,24 @@ export default function CvRoute() {
       <h1>Hello world!</h1>
       <Component />
     </div>
+  )
+}
+
+export function ErrorBoundary() {
+  return (
+    <GeneralErrorBoundary
+      statusHandlers={{
+        400: ({ error }) => (
+          <p>
+            {error.status} {error.data}
+          </p>
+        ),
+        404: ({ error }) => (
+          <p>
+            {error.status} {error.data}
+          </p>
+        )
+      }}
+    />
   )
 }

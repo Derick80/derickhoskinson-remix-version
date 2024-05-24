@@ -1,5 +1,6 @@
 import { type LoaderFunctionArgs, json } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
+import { GeneralErrorBoundary } from '~/components/error-boundry'
 import { AppRouteHandle } from '~/lib/types'
 
 export async function loader({}: LoaderFunctionArgs) {
@@ -238,5 +239,24 @@ export default function BetaRoute() {
         </defs>
       </svg>
     </div>
+  )
+}
+
+export function ErrorBoundary() {
+  return (
+    <GeneralErrorBoundary
+      statusHandlers={{
+        400: ({ error }) => (
+          <p>
+            {error.status} {error.data}
+          </p>
+        ),
+        404: ({ error }) => (
+          <p>
+            {error.status} {error.data}
+          </p>
+        )
+      }}
+    />
   )
 }
