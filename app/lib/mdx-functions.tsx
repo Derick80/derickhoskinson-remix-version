@@ -5,7 +5,6 @@ import { JSX } from 'react/jsx-runtime'
 import CodeBlock from '~/components/code-block'
 import { getImageBuilder, getImgProps } from '~/lib/images'
 import { cn } from './utils'
-import { Button } from '~/components/ui/button'
 import { H1, H2, H3 } from '~/components/layout/typography'
 
 function Table({

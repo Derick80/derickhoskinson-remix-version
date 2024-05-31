@@ -77,7 +77,7 @@ const config = {
       },
       fontFamily: {
        display : ['"Raleway"', "sans-serif"],
-        headings: ['"PlayFair"', "serif"],
+        headings: ['"Poppins"', "sans-serif"],
       },
     },
 
