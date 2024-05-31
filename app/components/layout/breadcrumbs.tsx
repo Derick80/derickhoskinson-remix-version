@@ -7,6 +7,7 @@ import {
 } from '@remix-run/react'
 import type { SerializeFrom } from '@remix-run/node'
 import { Icon } from '../icon-component'
+import { SlashIcon } from '@radix-ui/react-icons'
 
 export default function Breadcrumbs() {
   const matches = useMatches()
@@ -23,7 +24,7 @@ export default function Breadcrumbs() {
           <li key={match.id} className='inline text-xs'>
             {isActive ? title : <NavLink to={match.pathname}>{title}</NavLink>}
             {matchIndex < matchesWithBreadcrumbData.length - 1 ? (
-              <Icon name='slash' className='mx-1 h-3 w-3' />
+              <SlashIcon className='inline' />
             ) : null}
           </li>
         )

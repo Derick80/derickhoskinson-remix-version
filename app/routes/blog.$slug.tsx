@@ -2,13 +2,13 @@ import { type LoaderFunctionArgs, json } from '@remix-run/node'
 import { z } from 'zod'
 import { getMDXFileContent } from '~/.server/mdx.server'
 import { useLoaderData } from '@remix-run/react'
-import { CodeBlock, useMdxComponent } from '~/lib/mdx-functions'
+import { useMdxComponent } from '~/lib/mdx-functions'
 import { getLoaderDataForHandle } from '~/components/layout/breadcrumbs'
 import { AppRouteHandle } from '~/lib/types'
 import { mergeMeta } from '~/lib/meta'
 import { notFoundMeta } from './$'
 import { GeneralErrorBoundary } from '~/components/error-boundry'
-import { codeToHtml } from 'shiki'
+import CodeBlock from '~/components/code-block'
 
 const slugSchema = z.object({
   slug: z.string()
@@ -18,7 +18,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
   const { slug } = slugSchema.parse(params)
   if (!slug) throw new Error('No data found')
 
-  const { code, frontmatter } = await getMDXFileContent(slug)
+  const { code, frontmatter } = await getMDXFileContent('blog',slug)
 
   if (!code || !frontmatter) throw new Error('No data found')
 
@@ -31,8 +31,9 @@ export const handle: AppRouteHandle = {
       'routes/blog.$slug',
       matches
     )
+    // concat some strings together to generate a different title
 
-    return { title: data?.frontmatter.title ?? 'Not Found' }
+    return { title: data?.slug ?? 'Not Found' }
   }
 }
 
@@ -49,13 +50,23 @@ export const meta = mergeMeta<typeof loader>(({ data, params }) => {
 
 export default function PostRoute() {
   const data = useLoaderData<typeof loader>()
-  const Component = useMdxComponent(data.code)
+  const Component = useMdxComponent(data.code,
 
+
+  )
   return (
-    <div className='rounded-md text-wrap shadow p-1 pt-0 prose  prosse-slate dark-prosse-invert'>
-      <Component
+    <div className='flex prose dark:prose-invert flex-col rounded-md text-wrap shadow p-1 pt-0 gap-4'>
+      <h1 className='text-3xl font-bold'>{data.frontmatter.title}</h1>
+      <p className='text-gray-600 dark:text-gray-400'>
+        {data.frontmatter.readingTime}
+      </p>
+      <p className='text-gray-600 dark:text-gray-400'>
+        { data.frontmatter.wordCount } words
+      </p>
+      <div className=''>
 
-      />
+        <Component />
+        </div>
     </div>
   )
 }

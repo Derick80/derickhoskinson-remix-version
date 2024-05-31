@@ -1,7 +1,8 @@
 import { json } from '@remix-run/node'
 import { Link, Outlet, useLoaderData } from '@remix-run/react'
-import { FrontMatter, getDirectoryFrontMatter } from '~/.server/mdx.server'
+import { getDirectoryFrontMatter } from '~/.server/mdx.server'
 import { GeneralErrorBoundary } from '~/components/error-boundry'
+import { getLoaderDataForHandle } from '~/components/layout/breadcrumbs'
 import { Caption, Muted } from '~/components/layout/typography'
 import { Badge } from '~/components/ui/badge'
 import { AppRouteHandle } from '~/lib/types'
@@ -29,7 +30,11 @@ export async function loader() {
 }
 
 export const handle: AppRouteHandle = {
-  breadcrumb: () => ({ title: 'Blog' })
+  breadcrumb: () => {
+    return {
+      title: 'blog'
+    }
+  }
 }
 
 export const meta = () => {

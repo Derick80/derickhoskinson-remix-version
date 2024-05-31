@@ -36,13 +36,10 @@ import { Icon } from './components/icon-component'
 import { getDirectoryFrontMatter } from './.server/mdx.server'
 import { AppRouteHandle } from './lib/types'
 import Breadcrumbs from './components/layout/breadcrumbs'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger
-} from './components/ui/tooltip'
+import { TooltipProvider } from './components/ui/tooltip'
 import { Toaster } from './components/ui/toaster'
+import React from 'react'
+import { Separator } from './components/ui/separator'
 
 export const links: LinksFunction = () => [
   { rel: 'manifest', href: '/manifest.webmanifest' },
@@ -187,10 +184,34 @@ function App() {
   const theme = useTheme()
   const nonce = useNonce()
 
+   const [isScrollingDown, setIsScrollingDown] = React.useState(false);
+  const [lastScrollY, setLastScrollY] = React.useState(0);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > lastScrollY) {
+        setIsScrollingDown(true);
+      } else {
+        setIsScrollingDown(false);
+      }
+      setLastScrollY(window.scrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [lastScrollY]);
   return (
     <Document nonce={nonce} theme={theme}>
+      <Toaster />
       <div className='flex h-full flex-col gap-6 mx-auto max-w-3xl'>
-        <header className='flex flex-row bg-accent justify-between items-center px-0'>
+            <header
+          className={`flex h-16 flex-row bg-accent border-2 border-red-500 justify-between items-center px-0 fixed-header ${
+            isScrollingDown ? 'hidden-header' : ''
+          }`}
+        >
           <Icon name='apple'></Icon>
 
           <NavigationBar />
@@ -199,9 +220,11 @@ function App() {
             <ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />
           </div>
         </header>
-        <Breadcrumbs />
 
-        <div className='flex-1 min-h-screen'>
+
+        <div className='flex-1 min-h-screen pt-16'>
+          <Breadcrumbs />
+          <Separator />
           <Outlet />
         </div>
 

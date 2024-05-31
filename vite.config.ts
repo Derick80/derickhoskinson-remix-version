@@ -3,8 +3,6 @@ import { installGlobals } from "@remix-run/node";
 import { remixDevTools } from "remix-development-tools";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
-// put sitemaps
-
 
 
 

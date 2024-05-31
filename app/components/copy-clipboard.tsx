@@ -1,6 +1,7 @@
 import { CheckIcon, CopyIcon } from '@radix-ui/react-icons'
 import { clsx } from 'clsx'
 import * as React from 'react'
+import { Button } from './ui/button'
 
 async function copyToClipboard(value: string) {
   try {
@@ -60,10 +61,11 @@ export function ClipboardCopyButton({
   }, [state, value])
 
   return (
-    <button
+    <Button
+      variant='default'
       onClick={() => setState(State.Copy)}
       className={clsx(
-        'whitespace-nowrap rounded-lg bg-white p-3 text-lg font-medium text-black shadow ring-team-current transition hover:opacity-100 hover:shadow-md hover:ring-4 focus:opacity-100 focus:outline-none focus:ring-4 group-hover:opacity-100 peer-hover:opacity-100 peer-focus:opacity-100 lg:px-8 lg:py-4 lg:opacity-0',
+
         className
       )}
     >
@@ -73,6 +75,6 @@ export function ClipboardCopyButton({
       <span className='inline lg:sr-only'>
         {state === State.Copied ? <CheckIcon /> : <CopyIcon />}
       </span>
-    </button>
+    </Button>
   )
 }

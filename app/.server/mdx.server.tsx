@@ -1,20 +1,19 @@
 import path from 'path'
 import * as fsp from 'fs/promises'
 import fs from 'node:fs'
-import { bundleMDX, MDXBundlerResult } from 'mdx-bundler'
-import { getHighlighter, Highlighter } from 'shiki'
-
-import rehypeAutolinkHeadings from 'rehype-autolink-headings'
-import rehypeSlug from 'rehype-slug'
+import { bundleMDX } from 'mdx-bundler'
 import remarkGfm from 'remark-gfm'
-import remarkSlug from 'remark-slug'
 import matter from 'gray-matter'
-import { visit } from 'unist-util-visit'
-import { Root } from 'hast'
-import rehypeInferReadingTimeMeta from 'rehype-infer-reading-time-meta'
-import rehypeShiki from '@shikijs/rehype'
 import readingTime from 'reading-time'
+import rehypePrettyCode from 'rehype-pretty-code'
+import rehypeHighLight from 'rehype-highlight'
+import chalk from 'chalk'
+import CodeBlock from '~/components/code-block'
+import { visit } from "unist-util-visit"
+import { rehypeMetaAttribute } from 'rehype-meta-attribute'
 
+import '~/mdx.css'
+import { Button } from '~/components/ui/button'
 interface FrontMatter {
   slug: string
   title: string
@@ -27,64 +26,65 @@ interface FrontMatter {
   wordCount?: number
 }
 
+
+const rpcOptions = {
+  theme: 'nord',
+  grid: true,
+  keepBackground: false,
+              onVisitLine (node: { properties: { className: string[] } }) {
+                node.properties.className = node.properties.className || []
+                node.properties.className?.push('line')
+              },
+              onVisitHighlightedLine (node: { properties: { className: string[] } }) {
+                node.properties.className = node.properties.className || []
+                node.properties.className.push('line--highlighted')
+              },
+              onVisitHighlightedChars (node: { properties: { className: string[] } }) {
+                node.properties.className = ['word--highlighted']
+              },
+
+}
+
 // remarkSlug works
 const getMDXFileContent = async (
+  contentDir: string,
   slug: string
 ): Promise<{ code: string; frontmatter: FrontMatter }> => {
-  const shikiHighlighter: Highlighter = await getHighlighter({
-    themes: ['nord', 'light-plus'],
-    langs: [
-      'typescript',
-      'javascript',
-      'jsx',
-      'tsx',
-      'css',
-      'html',
-      'json',
-      'markdown'
-    ]
-  })
-  await shikiHighlighter.loadTheme('light-plus')
-
-  const basePath = `${process.cwd()}/content/blog/`
+  const basePath = `${process.cwd()}/content/`
   const source = await fsp.readFile(
-    path.join(`${basePath}/${slug}.mdx`),
+    path.join(`${basePath}/${contentDir}/${slug}.mdx`),
     'utf-8'
   )
-  // bundle the mdx file
-  // put tis back maybe   it puts ids on my headings i saw.               rehypeSlug,
-  const data: MDXBundlerResult = await bundleMDX({
-    source,
-    cwd: path.join(process.cwd(), 'app', 'components', 'ui'),
-    mdxOptions(options) {
-      options.remarkPlugins = [
-        ...(options.remarkPlugins ?? []),
-        remarkSlug,
-        remarkGfm
-      ]
-      options.rehypePlugins = [
-        ...(options.rehypePlugins ?? [
-        ]),
-        [rehypeAutolinkHeadings, { behavior: 'after' }],
-        [rehypeShiki, {
-          highlighter: shikiHighlighter,
-          theme: 'light-plus',
-          addLanguageClass: true,
-          logLevel: 'error'
 
 
-         }],
-        rehypeInferReadingTimeMeta
-      ]
+  try {
+    // bundle the mdx file
+    // put tis back maybe   it puts ids on my headings i saw.               rehypeSlug,
+    const data = await bundleMDX<FrontMatter>({
+      source,
+      cwd: path.join(process.cwd(), 'app', 'components'),
+      globals: {
+        CodeBlock,
+        Button
+       },
+       mdxOptions (options) {
+        options.remarkPlugins = [...(options.remarkPlugins ?? []), remarkGfm]
 
-      return {
-        ...options,
-        providerImportSource: '@mdx-js/react',
+        options.rehypePlugins = [
+          ...(options.rehypePlugins ?? [
+            [rehypePrettyCode, rpcOptions],
+            rehypeHighLight,
+          ]),
 
+        ]
+        return {
+          ...options,
+
+
+        }
       }
-    }
-  })
-  return {
+    })
+return {
     code: data.code,
     frontmatter: {
       ...data.frontmatter,
@@ -92,7 +92,23 @@ const getMDXFileContent = async (
       wordCount: source.split(/\s+/gu).length
     }
   }
+
+  }
+  catch (error) {
+    console.error(
+      chalk.red(`MDX Compilation failed for /app/content/blog/${slug}`),
+    )
+  }
+
+  return {
+    code: '',
+    frontmatter: {} as FrontMatter
+
+
+  }
 }
+
+
 
 // get all the frontmatter from a directory.
 
@@ -125,43 +141,9 @@ const getDirectoryFrontMatter = async (directory: string) => {
   return Promise.all(allPostsData)
 }
 
-// get a single mdx page by name
+export {
+  getMDXFileContent,
+  getDirectoryFrontMatter,
 
-const getMDXPage = async (pagename: string) => {
-  const basePath = `${process.cwd()}/content/pages/`
-  const source = await fsp.readFile(
-    path.join(`${basePath}/${pagename}.mdx`),
-    'utf-8'
-  )
-  async function bundleMdxContent(source: string) {
-    const data = await bundleMDX({
-      source,
-      cwd: `${process.cwd()}/app/components/ui/`,
-      mdxOptions(options) {
-        options.remarkPlugins = [
-          ...(options.remarkPlugins ?? []),
-          remarkSlug,
-          remarkGfm
-        ]
-        options.rehypePlugins = [
-          ...(options.rehypePlugins ?? []),
-          rehypeSlug,
-          [rehypeAutolinkHeadings, { behavior: 'after' }],
-          rehypeShiki,
-          rehypeInferReadingTimeMeta
-        ]
-        return {
-          ...options,
-          providerImportSource: '@mdx-js/react'
-        }
-      }
-    })
-
-    return data
-  }
-
-  return await bundleMdxContent(source)
 }
-
-export { getMDXFileContent, getDirectoryFrontMatter, getMDXPage }
 // Compare this snippet from app/lib/mdx-functions.tsx:

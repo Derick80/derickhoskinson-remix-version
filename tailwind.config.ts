@@ -6,7 +6,7 @@ const config = {
   darkMode: ["class"],
   content: [
     './pages/**/*.{ts,tsx,mdx}',
-    './components/**/*.{ts,tsxm,mdx}',
+    './components/**/*.{ts,tsx,mdx}',
     './app/**/*.{ts,tsx,mdx}',
     './src/**/*.{ts,tsx.,mdx}',
 
@@ -82,7 +82,10 @@ const config = {
     },
 
   },
-  plugins: [require("tailwindcss-animate"),require('@tailwindcss/typography')],
+  plugins: [
+
+    require("tailwindcss-animate"), require('@tailwindcss/typography')],
 } satisfies Config
 
 export default config
+

@@ -89,12 +89,21 @@
   body {
     @apply bg-background text-foreground font-display antialiased;
   }
-  .hljs {
-    @apply p-4 rounded-md overflow-auto relative;
-  }
 
-  .hljs-subst {
-    @apply text-black;
-  }
-} /* Custom Tailwind CSS styles */
-/* NOT SURE I NEED THIS */
+
+
+
+}
+
+pre [data-line] {
+  padding: 0 0.5rem;
+}
+
+/* Custom Tailwind CSS classes */
+.fixed-header {
+  @apply fixed top-0 left-0 w-full transition-transform duration-300 ease-in-out z-50;
+}
+
+.hidden-header {
+  @apply -translate-y-full;
+}

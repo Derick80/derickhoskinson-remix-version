@@ -1,12 +1,40 @@
 /* eslint-disable jsx-a11y/alt-text */
 import * as mdxBundler from 'mdx-bundler/client/index.js'
-import React from 'react'
+import React, { ComponentPropsWithoutRef, FC } from 'react'
+import { JSX } from 'react/jsx-runtime'
+import CodeBlock from '~/components/code-block'
 import { getImageBuilder, getImgProps } from '~/lib/images'
-import cn from 'classnames'
-import { CheckCircledIcon, CopyIcon } from '@radix-ui/react-icons'
+import { cn } from './utils'
 import { Button } from '~/components/ui/button'
-import { useToast } from '~/components/ui/use-toast'
 
+function Table({
+  data
+}: {
+  data: {
+    headers: string[]
+    rows: string[][]
+  }
+}) {
+  const headers = data.headers.map((header, index) => (
+    <th key={index}>{header}</th>
+  ))
+  const rows = data.rows.map((row, index) => (
+    <tr key={index}>
+      {row.map((cell, cellIndex) => (
+        <td key={cellIndex}>{cell}</td>
+      ))}
+    </tr>
+  ))
+
+  return (
+    <table>
+      <thead>
+        <tr>{headers}</tr>
+      </thead>
+      <tbody>{rows}</tbody>
+    </table>
+  )
+}
 
 interface CustomListProps {
   children: React.ReactNode
@@ -31,7 +59,7 @@ const Paragraph = (props: { children?: React.ReactNode }) => {
 
   return (
     <p
-      className='text-base leading- font-serif [&:not(:first-child)]:mt-6'
+      className='leading- [&:not(:first-child)]:mt-6'
       {...props}
     />
   )
@@ -75,103 +103,46 @@ export function H2(props: ElemProps): React.ReactElement {
   )
 }
 
-type CodeBlockProps = {
-  className?: string
-  children?: React.ReactNode
-}
-
-function CodeBlock({ className, children, ...props }: CodeBlockProps) {
-  const [copied, setCopied] = React.useState(false)
-  const [isServer, setIsServer] = React.useState(true)
-  const { toast } = useToast()
-
-  React.useEffect(() => {
-    setIsServer(false)
-  }, [])
-
-  function handleCopied() {
-    window.navigator.clipboard.writeText(children as string)
-    setCopied(true)
-    toast({
-      title: 'Copied to clipboard'
-    })
-    window.setTimeout(() => {
-      setCopied(false)
-    }, 3000)
-  }
-
-  let language = null as string | null
-  if (className) {
-    language = className.replace(/language-/, 'typescript')
-  }
-  if (isServer) return null
-  return language ? (
-      <pre
-        className={cn(
-          'rounded-md p-4 overflow-x-auto relative',
-          className
-        )}
-        {...props}
-      >
-        {language ? (
-          <span className='text-xs absolute bottom-2 right-2'>{language}</span>
-        ) : null}
-
-        <Button
-          className='absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity'
-          variant='default'
-          size='sm'
-          onClick={handleCopied}
-        >
-          {copied ? (
-            <>
-              <CopyIcon className='mr-2 h-3 w-3' /> Copied!
-            </>
-          ) : (
-            <>
-              <CheckCircledIcon className='mr-2 h-3 w-3' /> Copy
-            </>
-          )}
-        </Button>
-
-        {children}
-      code
-      </pre>
-  ) : (
-    <pre
-      className={cn(
-        'rounded-md p-4 overflow-x-auto',
-        className
-      )}
-      {...props}
-    >
-      {children}
-      </pre>
-    )
-}
-
-
 const mdxComponents = {
   p: Paragraph,
   BlogImage,
   ul: CustomUl,
   ol: CustomOl,
   li: CustomLi,
-  a: (props: { href: string; children: React.ReactNode }) => {
-    return (
-      <a
-        className='hover:underline focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-opacity-50'
-        {...props}
+  h2: H2,
+  Table,
+  pre: (({ className, ...props }: {
+    className?: string
+  } & ComponentPropsWithoutRef<'pre'>
+  ) => (
+    <pre
+      className={ cn('mb-4 mt-6 overflow-x-auto  rounded-lg py-4',
+      className
+      ) }
+      { ...props }
+    />
+  )),
+  code: ({ className, ...props }: {
+    className?: string
+  } & ComponentPropsWithoutRef<'code'>
+) => (
+
+      <><CodeBlock
+      className={ cn('rounded-lg', className) }
+      { ...props } /><Button
+        variant='default'
+        onClick={ () => console.log('clicked') }
+        className='absolute bottom-0 right-0'
       >
-        <span className='sr-only'>{props.children}</span>
-      </a>
-    )
-  },
-  h1: (props: { children: React.ReactNode }) => {
-    return <h1 className='text-4xl font-bold'>{props.children}</h1>
-  },
-  h2: H2
+        Copy
+      </Button></>
+
+  ),
+  CodeBlock,
+
+
 }
+
 
 declare global {
   type MDXProvidedComponents = typeof mdxComponents
@@ -182,7 +153,7 @@ declare global {
  * @param code the code to get the component from
  * @returns the component
  */
-export function getMdxComponent(code: string) {
+function getMdxComponent(code: string) {
   const Component = mdxBundler.getMDXComponent(code)
 
   function DCHMdxComponent({
@@ -201,11 +172,12 @@ export function getMdxComponent(code: string) {
   return DCHMdxComponent
 }
 
-export function useMdxComponent(code: string) {
+function useMdxComponent (code: string) {
+
   return React.useMemo(() => {
     const component = getMdxComponent(code)
     return component
   }, [code])
 }
 
-export { BlogImage, CodeBlock }
+export { useMdxComponent, BlogImage }
