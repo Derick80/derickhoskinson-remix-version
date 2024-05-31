@@ -90,14 +90,17 @@
     @apply bg-background text-foreground font-display antialiased;
   }
 
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
 
-
-
+    @apply font-headings;
+  }
 }
 
-pre [data-line] {
-  padding: 0 0.5rem;
-}
 
 /* Custom Tailwind CSS classes */
 .fixed-header {

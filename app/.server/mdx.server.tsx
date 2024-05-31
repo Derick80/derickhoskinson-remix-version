@@ -10,11 +10,12 @@ import rehypeHighLight from 'rehype-highlight'
 import chalk from 'chalk'
 import CodeBlock from '~/components/code-block'
 import rehypeSlug from 'rehype-slug'
-        import rehypeAutoLinkHeadings from 'rehype-autolink-headings';
+import rehypeAutoLinkHeadings from 'rehype-autolink-headings'
 import remarkToc from 'remark-toc'
 
 import '~/mdx.css'
 import { Button } from '~/components/ui/button'
+import { H1, H2, H3 } from '~/components/layout/typography'
 interface FrontMatter {
   slug: string
   title: string
@@ -30,19 +31,18 @@ interface FrontMatter {
 const rehypePCOptions = {
   theme: 'nord',
   grid: true,
-  keepBackground: false,
-              onVisitLine (node:LineElement) {
-                node.properties.className = node.properties.className || []
-                node.properties.className?.push('line')
-              },
-              onVisitHighlightedLine (node:LineElement, id: string) {
-                node.properties.className = node.properties.className || []
-                node.properties.className.push('line--highlighted')
-              },
-              onVisitHighlightedChars (node:LineElement, id: string) {
-                node.properties.className = ['word--highlighted']
-              },
-
+  keepBackground: true,
+  onVisitLine(node: LineElement) {
+    node.properties.className = node.properties.className || []
+    node.properties.className?.push('line')
+  },
+  onVisitHighlightedLine(node: LineElement, id: string) {
+    node.properties.className = node.properties.className || []
+    node.properties.className.push('line--highlighted')
+  },
+  onVisitHighlightedChars(node: LineElement, id: string) {
+    node.properties.className = ['word--highlighted']
+  }
 }
 
 // remarkSlug works
@@ -56,7 +56,6 @@ const getMDXFileContent = async (
     'utf-8'
   )
 
-
   try {
     // bundle the mdx file
     // put tis back maybe   it puts ids on my headings i saw.               rehypeSlug,
@@ -65,18 +64,23 @@ const getMDXFileContent = async (
       cwd: path.join(process.cwd(), 'app', 'components'),
       globals: {
         CodeBlock,
-        Button
-       },
-      mdxOptions (options) {
+        Button,
+        H1,
+        H2,
+        H3
+      },
+      mdxOptions(options) {
         options.remarkPlugins = [
           ...(options.remarkPlugins ?? []),
           remarkGfm,
-          [remarkToc, {
-            heading: 'Table of Contents',
-            tight: true,
-            ordered: true,
-        }]
-
+          [
+            remarkToc,
+            {
+              heading: 'Table of Contents',
+              tight: true,
+              ordered: true
+            }
+          ]
         ]
 
         options.rehypePlugins = [
@@ -85,40 +89,32 @@ const getMDXFileContent = async (
             rehypeHighLight,
             rehypeSlug,
             [rehypeAutoLinkHeadings, { behavior: 'wrap' }]
-          ]),
+          ])
         ]
         return {
-          ...options,
-
-
+          ...options
         }
       }
     })
-return {
-    code: data.code,
-    frontmatter: {
-      ...data.frontmatter,
-      readingTime: readingTime(data.code).text,
-      wordCount: source.split(/\s+/gu).length
+    return {
+      code: data.code,
+      frontmatter: {
+        ...data.frontmatter,
+        readingTime: readingTime(data.code).text,
+        wordCount: source.split(/\s+/gu).length
+      }
     }
-  }
-
-  }
-  catch (error) {
+  } catch (error) {
     console.error(
-      chalk.red(`MDX Compilation failed for /app/content/blog/${slug}`),
+      chalk.red(`MDX Compilation failed for /app/content/blog/${slug}`)
     )
   }
 
   return {
     code: '',
     frontmatter: {} as FrontMatter
-
-
   }
 }
-
-
 
 // get all the frontmatter from a directory.
 
@@ -151,9 +147,5 @@ const getDirectoryFrontMatter = async (directory: string) => {
   return Promise.all(allPostsData)
 }
 
-export {
-  getMDXFileContent,
-  getDirectoryFrontMatter,
-
-}
+export { getMDXFileContent, getDirectoryFrontMatter }
 // Compare this snippet from app/lib/mdx-functions.tsx:

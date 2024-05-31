@@ -184,31 +184,31 @@ function App() {
   const theme = useTheme()
   const nonce = useNonce()
 
-   const [isScrollingDown, setIsScrollingDown] = React.useState(false);
-  const [lastScrollY, setLastScrollY] = React.useState(0);
+  const [isScrollingDown, setIsScrollingDown] = React.useState(false)
+  const [lastScrollY, setLastScrollY] = React.useState(0)
 
   React.useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > lastScrollY) {
-        setIsScrollingDown(true);
+        setIsScrollingDown(true)
       } else {
-        setIsScrollingDown(false);
+        setIsScrollingDown(false)
       }
-      setLastScrollY(window.scrollY);
-    };
+      setLastScrollY(window.scrollY)
+    }
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll)
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [lastScrollY]);
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [lastScrollY])
   return (
     <Document nonce={nonce} theme={theme}>
       <Toaster />
       <div className='flex h-full flex-col gap-6 mx-auto max-w-3xl'>
-            <header
-          className={`flex h-16 flex-row bg-accent border-2 border-red-500 justify-between items-center px-0 fixed-header ${
+        <header
+          className={`flex h-16 flex-row bg-accent justify-between items-center px-0 fixed-header ${
             isScrollingDown ? 'hidden-header' : ''
           }`}
         >
@@ -220,7 +220,6 @@ function App() {
             <ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />
           </div>
         </header>
-
 
         <div className='flex-1 min-h-screen pt-16'>
           <Breadcrumbs />
@@ -328,6 +327,7 @@ const NavigationBar = () => {
         {menuItems.map((item) => (
           <li key={item.label}>
             <NavLink
+              prefetch='intent'
               to={item.path}
               className={({ isActive }) =>
                 ` ${
@@ -381,14 +381,7 @@ export const menuItems: MenuItem[] = [
     label: 'CV',
     title: 'View my CV',
     path: '/cv',
-    icon: <Icon name='dna' className='h-6 w-6'></Icon>
-  },
-
-  {
-    label: 'Users',
-    title: 'View the users',
-    path: '/users',
-    icon: <Icon name='users'></Icon>
+    icon: <Icon name='dna' ></Icon>
   }
 ]
 

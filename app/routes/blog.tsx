@@ -51,7 +51,7 @@ export default function BlogRoute() {
 
   return (
     <div className='flex flex-col gap-2 px-1'>
-        <Outlet />
+      <Outlet />
       <h1>Blog</h1>
       {frontmatter
         .sort((a, b) => {

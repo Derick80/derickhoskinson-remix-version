@@ -11,7 +11,7 @@ export const H1 = React.forwardRef<HTMLHeadingElement, HeaderProps>(
     <h1
       ref={ref}
       className={cn(
-        'scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl',
+        'scroll-m-20 text-4xl font-headings font-bold tracking-tight lg:text-5xl',
         className
       )}
       {...props}
@@ -27,7 +27,7 @@ export const H2 = React.forwardRef<HTMLHeadingElement, HeaderProps>(
     <h2
       ref={ref}
       className={cn(
-        'scroll-m-20 border-b border-primary pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0',
+        'scroll-m-20 border-b border-primary pb-2 text-3xl font-headings tracking-tight transition-colors font-bold first:mt-0',
         className
       )}
       {...props}
@@ -43,7 +43,7 @@ export const H3 = React.forwardRef<HTMLHeadingElement, HeaderProps>(
     <h3
       ref={ref}
       className={cn(
-        'scroll-m-20 text-xl font-semibold tracking-tight',
+        'scroll-m-20 text-xl font-headings font-semibold tracking-tight',
         className
       )}
       {...props}

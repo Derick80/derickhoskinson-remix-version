@@ -6,12 +6,10 @@ import { GeneralErrorBoundary } from '~/components/error-boundry'
 import { useMdxComponent } from '~/lib/mdx-functions'
 import { AppRouteHandle } from '~/lib/types'
 
-export async function loader ({ request, params }: LoaderFunctionArgs) {
-  console.log('params', request);
+export async function loader({ request, params }: LoaderFunctionArgs) {
+  console.log('params', request)
 
-  const cv = await getMDXFileContent(
- 'pages', 'resume'
-  )
+  const cv = await getMDXFileContent('pages', 'resume')
   return json({ cv })
 }
 

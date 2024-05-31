@@ -64,10 +64,7 @@ export function ClipboardCopyButton({
     <Button
       variant='default'
       onClick={() => setState(State.Copy)}
-      className={clsx(
-
-        className
-      )}
+      className={clsx(className)}
     >
       <span className='sr-only lg:not-sr-only lg:inline'>
         {state === State.Copied ? 'Copied to clipboard' : 'Click to copy url'}

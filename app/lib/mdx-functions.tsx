@@ -1,11 +1,12 @@
 /* eslint-disable jsx-a11y/alt-text */
 import * as mdxBundler from 'mdx-bundler/client/index.js'
-import React, { ComponentPropsWithoutRef, FC } from 'react'
+import React, { ComponentPropsWithoutRef } from 'react'
 import { JSX } from 'react/jsx-runtime'
 import CodeBlock from '~/components/code-block'
 import { getImageBuilder, getImgProps } from '~/lib/images'
 import { cn } from './utils'
 import { Button } from '~/components/ui/button'
+import { H1, H2, H3 } from '~/components/layout/typography'
 
 function Table({
   data
@@ -57,12 +58,7 @@ const Paragraph = (props: { children?: React.ReactNode }) => {
     return <>{props.children}</>
   }
 
-  return (
-    <p
-      className='leading- [&:not(:first-child)]:mt-6'
-      {...props}
-    />
-  )
+  return <p className='leading-7 [&:not(:first-child)]:mt-6' {...props} />
 }
 const BlogImage = ({
   cloudinaryId,
@@ -92,16 +88,6 @@ const BlogImage = ({
     />
   )
 }
-type ElemProps = {
-  children?: React.ReactNode
-}
-export function H2(props: ElemProps): React.ReactElement {
-  return (
-    <h2 className='text-2xl my-6 dark:text-blue-400 text-blue-800' {...props}>
-      {props.children}
-    </h2>
-  )
-}
 
 const mdxComponents = {
   p: Paragraph,
@@ -109,40 +95,24 @@ const mdxComponents = {
   ul: CustomUl,
   ol: CustomOl,
   li: CustomLi,
+  h1: H1,
   h2: H2,
+  he: H3,
   Table,
-  pre: (({ className, ...props }: {
+  pre: ({
+    className,
+    ...props
+  }: {
     className?: string
-  } & ComponentPropsWithoutRef<'pre'>
-  ) => (
+  } & ComponentPropsWithoutRef<'pre'>) => (
     <pre
-      className={ cn('mb-4 mt-6 overflow-x-auto  rounded-lg py-4',
-      className
-      ) }
-      { ...props }
+      className={cn('mb-4 mt-2 overflow-x-auto  rounded-lg', className)}
+      {...props}
     />
-  )),
-  code: ({ className, ...props }: {
-    className?: string
-  } & ComponentPropsWithoutRef<'code'>
-) => (
-
-      <><CodeBlock
-      className={ cn('rounded-lg', className) }
-      { ...props } /><Button
-        variant='default'
-        onClick={ () => console.log('clicked') }
-        className='absolute bottom-0 right-0'
-      >
-        Copy
-      </Button></>
 
   ),
-  CodeBlock,
-
-
+  CodeBlock
 }
-
 
 declare global {
   type MDXProvidedComponents = typeof mdxComponents
@@ -172,8 +142,7 @@ function getMdxComponent(code: string) {
   return DCHMdxComponent
 }
 
-function useMdxComponent (code: string) {
-
+function useMdxComponent(code: string) {
   return React.useMemo(() => {
     const component = getMdxComponent(code)
     return component

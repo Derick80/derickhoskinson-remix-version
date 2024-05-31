@@ -9,6 +9,8 @@ import { mergeMeta } from '~/lib/meta'
 import { notFoundMeta } from './$'
 import { GeneralErrorBoundary } from '~/components/error-boundry'
 import CodeBlock from '~/components/code-block'
+import { H1, H2, Muted } from '~/components/layout/typography'
+import { M } from 'node_modules/vite/dist/node/types.d-aGj9QkWt'
 
 const slugSchema = z.object({
   slug: z.string()
@@ -18,7 +20,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
   const { slug } = slugSchema.parse(params)
   if (!slug) throw new Error('No data found')
 
-  const { code, frontmatter } = await getMDXFileContent('blog',slug)
+  const { code, frontmatter } = await getMDXFileContent('blog', slug)
 
   if (!code || !frontmatter) throw new Error('No data found')
 
@@ -50,24 +52,18 @@ export const meta = mergeMeta<typeof loader>(({ data, params }) => {
 
 export default function PostRoute() {
   const data = useLoaderData<typeof loader>()
-  const Component = useMdxComponent(data.code,
-
-
-  )
+  const Component = useMdxComponent(data.code)
   return (
-    <div className='flex prose dark:prose-invert flex-col rounded-md text-wrap shadow p-1 pt-0 gap-4'>
+    <div className='flex prosse dark:prsose-invert flex-col rounded-md text-wrap shadow p-1 pt-0 gap-4'>
       <Outlet />
-      <h1 className='text-3xl font-bold'>{data.frontmatter.title}</h1>
-      <p className='text-gray-600 dark:text-gray-400'>
+      <H1 >{data.frontmatter.title}</H1>
+      <Muted>
         {data.frontmatter.readingTime}
-      </p>
-      <p className='text-gray-600 dark:text-gray-400'>
+     </Muted>
+      <Muted>
         { data.frontmatter.wordCount } words
-      </p>
-      <div className=''>
-
+      </Muted>
         <Component />
-        </div>
     </div>
   )
 }
