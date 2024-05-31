@@ -8,9 +8,8 @@ import { AppRouteHandle } from '~/lib/types'
 import { mergeMeta } from '~/lib/meta'
 import { notFoundMeta } from './$'
 import { GeneralErrorBoundary } from '~/components/error-boundry'
-import CodeBlock from '~/components/code-block'
 import { H1, H2, Muted } from '~/components/layout/typography'
-import { M } from 'node_modules/vite/dist/node/types.d-aGj9QkWt'
+import { Card, CardTitle,CardContent,CardDescription,CardHeader,CardFooter } from '~/components/ui/card'
 
 const slugSchema = z.object({
   slug: z.string()
@@ -56,13 +55,19 @@ export default function PostRoute() {
   return (
     <div className='flex prosse dark:prsose-invert flex-col rounded-md text-wrap shadow p-1 pt-0 gap-4'>
       <Outlet />
-      <H1 >{data.frontmatter.title}</H1>
+      <Card
+        className='mt-2'
+      >
+        <CardHeader>
+           <CardTitle >{data.frontmatter.title}</CardTitle>
+       </CardHeader>
       <Muted>
         {data.frontmatter.readingTime}
      </Muted>
       <Muted>
         { data.frontmatter.wordCount } words
       </Muted>
+      </Card>
         <Component />
     </div>
   )

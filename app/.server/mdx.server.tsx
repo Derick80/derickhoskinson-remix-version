@@ -11,7 +11,6 @@ import chalk from 'chalk'
 import CodeBlock from '~/components/code-block'
 import rehypeSlug from 'rehype-slug'
 import rehypeAutoLinkHeadings from 'rehype-autolink-headings'
-import remarkToc from 'remark-toc'
 
 import '~/mdx.css'
 import { Button } from '~/components/ui/button'
@@ -73,14 +72,7 @@ const getMDXFileContent = async (
         options.remarkPlugins = [
           ...(options.remarkPlugins ?? []),
           remarkGfm,
-          [
-            remarkToc,
-            {
-              heading: 'Table of Contents',
-              tight: true,
-              ordered: true
-            }
-          ]
+
         ]
 
         options.rehypePlugins = [
@@ -135,11 +127,15 @@ const getDirectoryFrontMatter = async (directory: string) => {
     // Use gray-matter to parse the post metadata section
     const matterResult = matter(fileContents)
 
+    const readingTimeResult = readingTime(matterResult.content)
+    const wordCount = matterResult.content.split(/\s+/gu).length
     const matterData = matterResult.data as FrontMatter & { content: string }
 
     matterData.published = matterData.published ?? false
     matterData.slug = slug
     matterData.content = matterResult.content
+    matterData.readingTime = readingTimeResult.text
+    matterData.wordCount = wordCount
     //
 
     return matterData

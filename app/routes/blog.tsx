@@ -9,6 +9,8 @@ import { AppRouteHandle } from '~/lib/types'
 
 export async function loader() {
   const frontmatter = await getDirectoryFrontMatter('blog')
+  console.log(frontmatter);
+
   const categories = frontmatter.map((post) => post.categories).flat()
   const uniqueCategories = [...new Set(categories)]
   const countEachCategory: { [key: string]: number } = categories.reduce(
@@ -50,7 +52,7 @@ export default function BlogRoute() {
   const { frontmatter } = useLoaderData<typeof loader>()
 
   return (
-    <div className='flex flex-col gap-2 px-1'>
+    <div className='flex flex-col gap-2 px-2'>
       <Outlet />
       <h1>Blog</h1>
       {frontmatter
