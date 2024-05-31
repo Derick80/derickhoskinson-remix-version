@@ -167,6 +167,10 @@ Make sure to deploy the output of `npm run build`
 
 ## Development
 
+
+https://github.com/jolbol1/JamesShopland.com
+
+
 Run the Vite dev server:
 
 ```shellscript

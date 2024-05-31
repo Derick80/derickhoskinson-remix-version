@@ -1,7 +1,7 @@
 import { type LoaderFunctionArgs, json } from '@remix-run/node'
 import { z } from 'zod'
 import { getMDXFileContent } from '~/.server/mdx.server'
-import { useLoaderData } from '@remix-run/react'
+import { Outlet, useLoaderData } from '@remix-run/react'
 import { useMdxComponent } from '~/lib/mdx-functions'
 import { getLoaderDataForHandle } from '~/components/layout/breadcrumbs'
 import { AppRouteHandle } from '~/lib/types'
@@ -56,6 +56,7 @@ export default function PostRoute() {
   )
   return (
     <div className='flex prose dark:prose-invert flex-col rounded-md text-wrap shadow p-1 pt-0 gap-4'>
+      <Outlet />
       <h1 className='text-3xl font-bold'>{data.frontmatter.title}</h1>
       <p className='text-gray-600 dark:text-gray-400'>
         {data.frontmatter.readingTime}

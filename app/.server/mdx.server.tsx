@@ -5,12 +5,13 @@ import { bundleMDX } from 'mdx-bundler'
 import remarkGfm from 'remark-gfm'
 import matter from 'gray-matter'
 import readingTime from 'reading-time'
-import rehypePrettyCode from 'rehype-pretty-code'
+import rehypePrettyCode, { LineElement } from 'rehype-pretty-code'
 import rehypeHighLight from 'rehype-highlight'
 import chalk from 'chalk'
 import CodeBlock from '~/components/code-block'
-import { visit } from "unist-util-visit"
-import { rehypeMetaAttribute } from 'rehype-meta-attribute'
+import rehypeSlug from 'rehype-slug'
+        import rehypeAutoLinkHeadings from 'rehype-autolink-headings';
+import remarkToc from 'remark-toc'
 
 import '~/mdx.css'
 import { Button } from '~/components/ui/button'
@@ -26,20 +27,19 @@ interface FrontMatter {
   wordCount?: number
 }
 
-
-const rpcOptions = {
+const rehypePCOptions = {
   theme: 'nord',
   grid: true,
   keepBackground: false,
-              onVisitLine (node: { properties: { className: string[] } }) {
+              onVisitLine (node:LineElement) {
                 node.properties.className = node.properties.className || []
                 node.properties.className?.push('line')
               },
-              onVisitHighlightedLine (node: { properties: { className: string[] } }) {
+              onVisitHighlightedLine (node:LineElement, id: string) {
                 node.properties.className = node.properties.className || []
                 node.properties.className.push('line--highlighted')
               },
-              onVisitHighlightedChars (node: { properties: { className: string[] } }) {
+              onVisitHighlightedChars (node:LineElement, id: string) {
                 node.properties.className = ['word--highlighted']
               },
 
@@ -67,15 +67,25 @@ const getMDXFileContent = async (
         CodeBlock,
         Button
        },
-       mdxOptions (options) {
-        options.remarkPlugins = [...(options.remarkPlugins ?? []), remarkGfm]
+      mdxOptions (options) {
+        options.remarkPlugins = [
+          ...(options.remarkPlugins ?? []),
+          remarkGfm,
+          [remarkToc, {
+            heading: 'Table of Contents',
+            tight: true,
+            ordered: true,
+        }]
+
+        ]
 
         options.rehypePlugins = [
           ...(options.rehypePlugins ?? [
-            [rehypePrettyCode, rpcOptions],
+            [rehypePrettyCode, rehypePCOptions],
             rehypeHighLight,
+            rehypeSlug,
+            [rehypeAutoLinkHeadings, { behavior: 'wrap' }]
           ]),
-
         ]
         return {
           ...options,
