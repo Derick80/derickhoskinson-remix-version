@@ -1,22 +1,9 @@
 import { redirect, SerializeFrom } from '@remix-run/node'
-import { useRootLoaderData, loader as rootLoader } from '../root'
 import { sessionStorage } from './auth.server'
 import { prisma } from './prisma.server'
 import { z } from 'zod'
+import { useOptionalUser } from '~/lib/misc'
 export const sessionKey = 'authSession'
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function isUser(user: any): user is SerializeFrom<typeof rootLoader>['user'] {
-  return user && typeof user === 'object' && typeof user.id === 'string'
-}
-
-export function useOptionalUser() {
-  const data = useRootLoaderData()
-  if (!data || !isUser(data.user)) {
-    return undefined
-  }
-  return data.user
-}
 
 export function useUser() {
   const maybeUser = useOptionalUser()

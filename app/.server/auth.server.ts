@@ -3,11 +3,11 @@ import { prisma } from '~/.server/prisma.server'
 import { z } from 'zod'
 import { createCookieSessionStorage, Session } from '@remix-run/node'
 
-import type { Prisma, User } from '@prisma/client'
-import { discordStrategy } from './strategies/discord'
+import type { Prisma } from '@prisma/client'
+import { discordStrategy, LoggedInUser } from './strategies/discord'
 
-export const SESSION_ID_KEY: string = 'authSession'
-export const SESSION_EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 30
+export const SESSION_KEY: string = 'authSession'
+export const SESSION_EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 30 // 30 days
 export const getSessionExpirationDate = () =>
   new Date(Date.now() + SESSION_EXPIRATION_TIME)
 
@@ -28,10 +28,11 @@ const cookieOptions = {
   sameSite: 'lax' as const,
   path: '/',
   secrets: [process.env.SESSION_SECRET || 's3cret1'],
-  secure: process.env.NODE_ENV === 'production'
+  secure: process.env.NODE_ENV === 'production',
+  maxAge: SESSION_EXPIRATION_TIME
 }
 
-export const sessionStorage = createCookieSessionStorage<CookieSession>({
+export const sessionStorage = createCookieSessionStorage({
   cookie: cookieOptions
 })
 export const getSession = async (request: Request) => {
@@ -55,12 +56,8 @@ export type AuthSession = {
   sessionId?: string
 }
 
-export const authenticator = new Authenticator<
-  Session & {
-    user?: Partial<AuthSession>
-  }
->(sessionStorage, {
-  sessionKey: SESSION_ID_KEY,
+export const authenticator = new Authenticator<LoggedInUser>(sessionStorage, {
+  sessionKey: SESSION_KEY,
   throwOnError: true,
   sessionErrorKey: 'authError'
 })

@@ -11,13 +11,17 @@ nvm use node v20.11.0
 
 - Until form login is working again login with discord and then copy paste the userId from prisma studio into the seed file
 
+
+## dependency usage
+https://sergiodxa.com/tutorials/find-and-remove-unused-code-with-knip
+
 ## Component Reference
 
 - Accordian - <https://github.com/AllanSimoyi/PersonalWebsite/blob/main/app/core/components/AccordionItem.tsx>
-- Post Editor - [TipTap](https://tiptap.dev/)
 - Resizeable  image component [reference](https://github.com/Habib-Shahzad/tiptap-resizable-image/tree/main/src/components)
 - Blog Category Filter
   - [reference](https://github.com/kentcdodds/kentcdodds.com/blob/main/app/routes/blog.tsx)
+  - https://github.com/wKovacs64/drinks/blob/dev/app/navigation/breadcrumbs.tsx
 
 ## Database Setup
 
@@ -166,6 +170,10 @@ Make sure to deploy the output of `npm run build`
 📖 See the [Remix docs](https://remix.run/docs) and the [Remix Vite docs](https://remix.run/docs/en/main/guides/vite) for details on supported features.
 
 ## Development
+
+
+https://github.com/jolbol1/JamesShopland.com
+
 
 Run the Vite dev server:
 

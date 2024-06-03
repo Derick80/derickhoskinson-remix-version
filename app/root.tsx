@@ -1,8 +1,8 @@
 import {
-  ActionFunctionArgs,
   json,
   LinksFunction,
-  LoaderFunctionArgs
+  LoaderFunctionArgs,
+  MetaFunction
 } from '@remix-run/node'
 import {
   Links,
@@ -24,26 +24,65 @@ import { HoneypotInputs, HoneypotProvider } from 'remix-utils/honeypot/react'
 import { isAuthenticated } from './.server/auth.server'
 import { SunIcon, MoonIcon, LaptopIcon } from '@radix-ui/react-icons'
 import { z } from 'zod'
-import { getTheme, setTheme, Theme } from './.server/theme.server'
+import { getTheme, Theme } from './.server/theme.server'
 import { ClientHintCheck, getHints, useHints } from './lib/client-hints'
-import { invariantResponse } from '@epic-web/invariant'
 import { useRequestInfo } from './lib/request-info'
 import { useNonce } from './lib/nonce-providers'
 import { GeneralErrorBoundary } from './components/error-boundry'
 import { getEnv } from './.server/env.server'
 import { Icon } from './components/icon-component'
+import { getDirectoryFrontMatter } from './.server/mdx.server'
+import { AppRouteHandle } from './lib/types'
+import Breadcrumbs from './components/layout/breadcrumbs'
+import { TooltipProvider } from './components/ui/tooltip'
+import { Toaster } from './components/ui/toaster'
+import React from 'react'
+import { Separator } from './components/ui/separator'
+import UserMenu from './components/user-menu'
+import { action } from './routes/_action.set-theme'
 
 export const links: LinksFunction = () => [
+  { rel: 'manifest', href: '/manifest.webmanifest' },
+  {
+    rel: 'preconnect',
+    href: 'https://fonts.gstatic.com',
+    crossOrigin: 'anonymous'
+  },
+  {
+    rel: 'stylesheet',
+    href: 'https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&family=Slabo+27px&display=swap',
+    crossOrigin: 'anonymous'
+  },
   { rel: 'stylesheet', href: stylesheet }
 ]
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const user = await isAuthenticated(request)
 
+  const frontmatter = await getDirectoryFrontMatter('blog')
+  const categories = frontmatter.map((post) => post.categories).flat()
+  const uniqueCategories = [...new Set(categories)]
+  const countEachCategory: { [key: string]: number } = categories.reduce(
+    (acc, category) => {
+      acc[category] = acc[category] ? acc[category] + 1 : 1
+      return acc
+    },
+    {} as { [key: string]: number }
+  )
+  // combine uniqueCategories and countEachCategory into an object
+  const categoriesWithCount = uniqueCategories.map((category) => {
+    return {
+      category,
+      count: countEachCategory[category]
+    }
+  })
+
   // more code here
   return json({
     honeypotInputProps: honeypot.getInputProps(),
     user,
+    frontmatter,
+    categoriesWithCount,
     requestInfo: {
       hints: getHints(request),
       userPrefs: {
@@ -54,30 +93,28 @@ export async function loader({ request }: LoaderFunctionArgs) {
   })
 }
 
-export async function action({ request }: ActionFunctionArgs) {
-  const formData = await request.formData()
-  try {
-    honeypot.check(formData)
-  } catch (error) {
-    // @ts-expect-error error is a string most likely
-    return json({ error: error.message }, { status: 400 })
-  }
+// export const shouldRevalidate = () => false
 
-  const submission = parseWithZod(formData, {
-    schema: ThemeFormSchema
-  })
+// this is preobably broken
 
-  invariantResponse(submission.status === 'success', 'Invalid theme submission')
-  const { theme } = submission.value
+export const meta: MetaFunction<typeof loader> = () => {
+  const appName = 'DerickHoskinson.com'
+  const title = 'DerickHoskinson.com'
+  const description = 'DerickHoskinson.com'
 
-  const responseInit = {
-    headers: {
-      'set-cookie': setTheme(theme)
-    }
-  }
-  return json({ result: submission.reply() }, responseInit)
+  return [
+    { title },
+    { name: 'description', content: description },
+    { property: 'og:title', content: title },
+    { property: 'og:description', content: description },
+    { name: 'application-name', content: appName },
+    { name: 'apple-mobile-web-app-title', content: appName }
+  ]
 }
 
+export const handle: AppRouteHandle = {
+  breadcrumb: () => ({ title: 'DerickHoskinson.com' })
+}
 function Document({
   children,
   nonce,
@@ -102,6 +139,7 @@ function Document({
       </head>
       <body className='bg-background text-foreground'>
         {children}
+        <Toaster />
         <script
           nonce={nonce}
           dangerouslySetInnerHTML={{
@@ -119,24 +157,49 @@ function App() {
   const theme = useTheme()
   const nonce = useNonce()
 
+  const [isScrollingDown, setIsScrollingDown] = React.useState(false)
+  const [lastScrollY, setLastScrollY] = React.useState(0)
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > lastScrollY) {
+        setIsScrollingDown(true)
+      } else {
+        setIsScrollingDown(false)
+      }
+      setLastScrollY(window.scrollY)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [lastScrollY])
   return (
     <Document nonce={nonce} theme={theme}>
-      <div className='flex h-full flex-col mx-auto max-w-3xl border-2 border-green-500'>
-        <header className='flex flex-row justify-between items-center px-0'>
-          <Icon name='apple'></Icon>
+      <Toaster />
+      <header
+        className={`flex h-16 border-b-2 border-primary/10 flex-row justify-between items-center px-0 transition-transform duration-300 ease-in-out z-50 ${
+          isScrollingDown ? '-translate-y-full' : ''
+        }`}
+      >
+        <Icon name='apple'></Icon>
 
-          <NavigationBar />
-          <div className='flex gap-2'>
-            <Icon name='apple'></Icon>
-            <ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />
-          </div>
-        </header>
-        <div className='flex-1 min-h-screen border-2 border-green-500'>
-          <Outlet />
+        <NavigationBar />
+        <div className='flex gap-2'>
+          <UserMenu />
+          <ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />
         </div>
+      </header>
 
-        <div className='container flex justify-between pb-5'>footer things</div>
+      <div className='flex-1 min-h-screen px-4 pt-4 mt-14'>
+        <Breadcrumbs />
+        <Separator />
+        <Outlet />
       </div>
+
+      <div className='container flex justify-between pb-5'>footer things</div>
     </Document>
   )
 }
@@ -144,9 +207,11 @@ export default function AppWithProviders() {
   const data = useLoaderData<typeof loader>()
 
   return (
-    <HoneypotProvider {...data.honeypotInputProps}>
-      <App />
-    </HoneypotProvider>
+    <TooltipProvider>
+      <HoneypotProvider {...data.honeypotInputProps}>
+        <App />
+      </HoneypotProvider>
+    </TooltipProvider>
   )
 }
 
@@ -177,7 +242,7 @@ export function useTheme() {
  */
 export function useOptimisticThemeMode() {
   const fetchers = useFetchers()
-  const themeFetcher = fetchers.find((f) => f.formAction === '/')
+  const themeFetcher = fetchers.find((f) => f.formAction === '/set-theme')
 
   if (themeFetcher && themeFetcher.formData) {
     const submission = parseWithZod(themeFetcher.formData, {
@@ -195,7 +260,7 @@ function ThemeSwitch({ userPreference }: { userPreference?: Theme | null }) {
 
   const [form] = useForm({
     id: 'theme-switch',
-    lastResult: fetcher.data?.result
+    lastResult: fetcher.data?.submission.value
   })
 
   const optimisticMode = useOptimisticThemeMode()
@@ -209,18 +274,17 @@ function ThemeSwitch({ userPreference }: { userPreference?: Theme | null }) {
   }
 
   return (
-    <fetcher.Form method='POST' {...getFormProps(form)}>
+    <fetcher.Form method='POST' {...getFormProps(form)} action='/set-theme'>
       <HoneypotInputs label='Please leave this field blank' />
 
       <input type='hidden' name='theme' value={nextMode} />
-      <div className='flex gap-2'>
-        <button
-          type='submit'
-          className='flex h-8 w-8 cursor-pointer items-center justify-center'
-        >
-          {modeLabel[mode]}
-        </button>
-      </div>
+
+      <button
+        type='submit'
+        className='flex h-8 w-8 cursor-pointer items-center justify-center'
+      >
+        {modeLabel[mode]}
+      </button>
     </fetcher.Form>
   )
 }
@@ -229,15 +293,12 @@ function ThemeSwitch({ userPreference }: { userPreference?: Theme | null }) {
 
 const NavigationBar = () => {
   return (
-    <nav className='flex justify-between border-2 border-red-500'>
-      <ul
-        className='flex gap-4
-            items-center
-          '
-      >
+    <nav className='flex justify-between p-1'>
+      <ul className='flex gap-4 items-center'>
         {menuItems.map((item) => (
           <li key={item.label}>
             <NavLink
+              prefetch='intent'
               to={item.path}
               className={({ isActive }) =>
                 ` ${
@@ -267,7 +328,7 @@ export const menuItems: MenuItem[] = [
     label: 'Home',
     title: 'Click to go to the home page',
     path: '/',
-    icon: <Icon name='book'></Icon>
+    icon: <Icon name='castle'></Icon>
   },
   {
     label: 'Blog',
@@ -291,28 +352,15 @@ export const menuItems: MenuItem[] = [
     label: 'CV',
     title: 'View my CV',
     path: '/cv',
-    icon: <Icon name='dna' className='h-6 w-6'></Icon>
-  },
-
-  {
-    label: 'Users',
-    title: 'View the users',
-    path: '/users',
-    icon: <Icon name='users'></Icon>
+    icon: <Icon name='dna'></Icon>
   }
 ]
 
 /* End Navigation */
 
+export function ErrorBoundary({ error }: { error: Error }) {
+  return <GeneralErrorBoundary error={error} />
+}
+
 // copied and pasted this from another project
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const ErrorBoundary = () => {
-  // the nonce doesn't rely on the loader so we can access that
-  const nonce = useNonce()
-
-  return (
-    <Document nonce={nonce}>
-      <GeneralErrorBoundary />
-    </Document>
-  )
-}

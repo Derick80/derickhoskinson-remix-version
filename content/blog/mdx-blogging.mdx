@@ -6,31 +6,24 @@ author: Derick Hoskinson
 published: true
 categories: [documentation, learning, coding]
 ---
-export const toc = [{depth: 1, value: 'The title'}]
 
 
 # New MDX Page
+Welcome to your ne
+w MDX page. Start editing to add your content!
 
-Welcome to your new MDX page. Start editing to add your content!
-
-
-### Process
+## Process
 
 - I was having trouble access components from the MDX files. This was due to some misunderstanding of the current working directory and how mdx-bundler works.  So, i started to console.log things
 
-```ts
+```ts {1,6-10} title="somethingComponent.ts"
 const getMDXFileContent = async (slug: string) => {
-  const basePath = `${process.cwd()}/content/blog/`
-
-  console.log(basePath, 'basepath')
+const basePath = `${process.cwd()}/content/blog/`
 
   const source = await fsp.readFile(
     path.join(`${basePath}/${slug}.mdx`),
     'utf-8'
   )
-
-  // bundle the mdx file
-  console.log(process.cwd(), 'cwd')
 
   const data = await bundleMDX({
     source,
@@ -53,6 +46,8 @@ const getMDXFileContent = async (slug: string) => {
   return data
 }
 ```
+
+- I was able to see that the cwd was not what I was expecting.  I was expecting it to be the root of the project, but it was the root of the remix-dh package.  I was able to fix this by setting the cwd to the root of the project.
 
 ```ts
 /Users/voidnation/Documents/projects/remix-2024/remix-dh/content/blog/ basepath

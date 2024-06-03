@@ -1,27 +1,58 @@
 import { json } from '@remix-run/node'
 import { Link, Outlet, useLoaderData } from '@remix-run/react'
-import { FrontMatter, getDirectoryFrontMatter } from '~/.server/mdx.server'
-import { Muted } from '~/components/layout/typography'
+import { getDirectoryFrontMatter } from '~/.server/mdx.server'
+import { GeneralErrorBoundary } from '~/components/error-boundry'
+import { getLoaderDataForHandle } from '~/components/layout/breadcrumbs'
+import { Caption, Muted } from '~/components/layout/typography'
 import { Badge } from '~/components/ui/badge'
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardDescription,
-  CardFooter
-} from '~/components/ui/card'
+import { AppRouteHandle } from '~/lib/types'
 
 export async function loader() {
   const frontmatter = await getDirectoryFrontMatter('blog')
+  console.log(frontmatter)
+
+  const categories = frontmatter.map((post) => post.categories).flat()
+  const uniqueCategories = [...new Set(categories)]
+  const countEachCategory: { [key: string]: number } = categories.reduce(
+    (acc, category) => {
+      acc[category] = acc[category] ? acc[category] + 1 : 1
+      return acc
+    },
+    {} as { [key: string]: number }
+  )
+  // combine uniqueCategories and countEachCategory into an object
+  const categoriesWithCount = uniqueCategories.map((category) => {
+    return {
+      category,
+      count: countEachCategory[category]
+    }
+  })
+
   return json({ frontmatter })
+}
+
+export const handle: AppRouteHandle = {
+  breadcrumb: () => {
+    return {
+      title: 'blog'
+    }
+  }
+}
+
+export const meta = () => {
+  return [
+    {
+      title: 'Blog',
+      description: 'A collection of blog posts'
+    }
+  ]
 }
 
 export default function BlogRoute() {
   const { frontmatter } = useLoaderData<typeof loader>()
 
   return (
-    <div className='flex flex-col items-center gap-2 px-2'>
+    <div className='flex flex-col gap-2 px-2'>
       <Outlet />
       <h1>Blog</h1>
       {frontmatter
@@ -40,28 +71,46 @@ export default function BlogRoute() {
 
 const PostPreviews = (frontmatter: FrontMatter) => {
   return (
-    <article className='prose prose-slate w-full'>
-      <Card>
-        <CardHeader className='pb-1 pt-2'>
-          <CardTitle>
-            <Link to={`/blog/${frontmatter.slug}`}>
-              <Muted>{frontmatter.title}</Muted>
-            </Link>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className='pb-2 gap-4 w-full'>
-          <CardDescription className='italic text-xs'>
-                 {frontmatter.description}
-          </CardDescription>
-          <div className='flex flex-row gap-1 md:gap-2'>
+    <article className=' w-full rounded-md bg-card text-card-foreground shadow  p-1 pt-0'>
+      <div className='flex flex-col gap-2'>
+        <h3 className='m-0'>
+          <Link prefetch='intent' to={`/blog/${frontmatter.slug}`}>
+            {frontmatter.title}
+          </Link>
+        </h3>
+        <Muted className='indent italic text-sm'>
+          {frontmatter.description}
+        </Muted>
+        <div className='flex flex-col gap-1 md:gap-2'>
+          <div className='flex gap-1 items-center'>
+            <Caption>Categories:</Caption>
             {frontmatter.categories.map((category) => (
-              <Badge key={category}>{category}</Badge>
+              <Badge key={category}>
+                <Link to={`/blog/categories/${category}`}>{category}</Link>
+              </Badge>
             ))}
           </div>
-
-          <CardFooter>{frontmatter.author}</CardFooter>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </article>
+  )
+}
+
+export function ErrorBoundary() {
+  return (
+    <GeneralErrorBoundary
+      statusHandlers={{
+        400: ({ error }) => (
+          <p>
+            {error.status} {error.data}
+          </p>
+        ),
+        404: ({ error }) => (
+          <p>
+            {error.status} {error.data}
+          </p>
+        )
+      }}
+    />
   )
 }

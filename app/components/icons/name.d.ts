@@ -30,6 +30,7 @@ export type IconName =
   | 'clipboard-copy'
   | 'code'
   | 'coffee'
+  | 'color-pal'
   | 'discord-logo'
   | 'dna-off'
   | 'dna'
@@ -38,4 +39,5 @@ export type IconName =
   | 'log-in'
   | 'log-out'
   | 'scroll'
+  | 'slash'
   | 'users'

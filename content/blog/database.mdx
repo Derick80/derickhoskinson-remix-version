@@ -9,9 +9,7 @@ categories: [database, cockroachdb, postgres]
 
 import { Button } from '~/components/ui/button'
 
-import { Button as BB } from './button.tsx'
 
-export const toc = [{depth: 1, value: 'The title'}]
 
 export const wow = 'wow!'
 
@@ -21,28 +19,20 @@ import { TContainer } from '~/components/tst-container'
 
 ## Context
 
-<BB>hi</BB>
-
-
-
-<Button
-
->
-click me
-</Button>
-
 ### Test import button
 <TContainer />
-
+VariantAlleles.com will use a distributed SQL database that is compatible with postgres to store data. The database is hosted on cockroachlabs cloud.
 
 ### Old content
 
+#### VariantAlleles.com will use a distributed SQL database that is compatible with postgres to store data. The database is hosted on cockroachlabs cloud.
+
+
 VariantAlleles.com will use a distributed SQL database that is compatible with postgres to store data. The database is hosted on cockroachlabs cloud.
-
-
-
 ## Test out code blocks with syntax highlighting
-```ts
+
+```tsx
+
 function getImageBuilder (
     id: string,
     alt: string = '',
@@ -58,7 +48,27 @@ function imageBuilder (transformations?: TransformerOption) {
     imageBuilder.style = style
     return imageBuilder
 }
+
 ```
+## History
+
+### Discovery
+
+In the 1840s, Urbain Le Verrier used Newtonian mechanics to predict the
+position of…
+
+### Name and symbol
+
+The name Pluto is for the Roman god of the underworld, from a Greek epithet for
+Hades…
+
+### Planet X disproved
+
+Once Pluto was found, its faintness and lack of a viewable disc cast doubt…
+
+## Orbit
+
+Pluto’s orbital period is about 248 years…
 ## Autolink literals
 
 www.example.com, https://example.com, and contact@example.com.
@@ -85,7 +95,9 @@ A note[^1]
 ### CockroachDB
 
 Connection string template:
+```ts
 DATABASE_URL=postgresql://USER:PASSWORD.HOST:PORT/DATABASE?sslmode=verify-full
+```
 
 ## Decision
 
