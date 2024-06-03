@@ -32,7 +32,7 @@ export const mergeMeta = <
         // 'title' and 'charSet' are special cases that automatically get
         // handled by defaulting isDuplicate to true
         ;['name', 'property', 'httpEquiv'].forEach((k) => {
-          // @ts-exzpect-error
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           if ((inner as any)[k] !== (outer as any)[k]) {
             isDuplicate = false
           }

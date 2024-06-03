@@ -1,36 +1,84 @@
-# Welcome to Remix
+# Welcome to DerickHoskinson.com: A Remix & Vite Project
 
-- [Remix Docs](https://remix.run/docs)
+- [DerickHoskinson.com](https://derickhoskinson.com)
 
+## Table of Contents
 
-nvm use node v20.11.0
-### Notes
+- [Welcome to DerickHoskinson.com: A Remix \& Vite Project](#welcome-to-derickhoskinsoncom-a-remix--vite-project)
+  - [Table of Contents](#table-of-contents)
+  - [Tech Stack](#tech-stack)
+  - [Features](#features)
+    - [Additional Packages](#additional-packages)
+  - [Web References](#web-references)
+  - [Component Reference](#component-reference)
+  - [Database Setup](#database-setup)
+  - [Authentication Setup](#authentication-setup)
+  - [Image Upload Setup](#image-upload-setup)
+  - [Scripts \& Other Automation](#scripts--other-automation)
+  - [Code and Additional Information](#code-and-additional-information)
+    - [Zod with Action discrimator](#zod-with-action-discrimator)
+  - [Environment Variables](#environment-variables)
+  - [Development](#development)
+  - [Remix Specific Commands \& Resources](#remix-specific-commands--resources)
+
+## Tech Stack
+
+- [Remix](https://remix.run/)
+- [Vite](https://vitejs.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [ShadCN](https://ui.shadcn.com/)
+- [Prisma](https://www.prisma.io/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [CockroachDB](https://www.cockroachlabs.com/)
+- [Fly.io](https://fly.io/)
+- [Cloudinary](https://cloudinary.com/)
+- [Zod](https://zod.dev/)
+
+## Features
+
+- [x] Image Upload with Cloudinary
+- [x] Blog using MDX
+
+### Additional Packages
+
+- [Prettier Tailwind](https://github.com/tailwindlabs/prettier-plugin-tailwindcss)
+- [tsx](https://www.npmjs.com/package/tsx)
+- [Remix Dev Tools](https://remix-development-tools.fly.dev/)
+- [Remix Flat Routes](https://github.com/kiliman/remix-flat-routes)
+- [Remix Auth](https://github.com/sergiodxa/remix-auth)
+- [Epic Stack Components](https://github.com/epicweb-dev/epic-stack)
+
+## Web References
+
+- [Knip](https://sergiodxa.com/tutorials/find-and-remove-unused-code-with-knip)
 - [SEO](https://github.com/nasa-gcn/remix-seo)
-## Prisma Seeding in Development
-
-
-- Until form login is working again login with discord and then copy paste the userId from prisma studio into the seed file
-
-
-## dependency usage
-https://sergiodxa.com/tutorials/find-and-remove-unused-code-with-knip
+- [Dependency Usage](https://sergiodxa.com/tutorials/find-and-remove-unused-code-with-knip)
+- [SVG Icon Cli](https://www.jacobparis.com/content/svg-icons-with-cli)
+- [Upload Image & Pending UI](https://www.jacobparis.com/content/remix-image-uploads)
 
 ## Component Reference
 
-- Accordian - <https://github.com/AllanSimoyi/PersonalWebsite/blob/main/app/core/components/AccordionItem.tsx>
-- Resizeable  image component [reference](https://github.com/Habib-Shahzad/tiptap-resizable-image/tree/main/src/components)
-- Blog Category Filter
-  - [reference](https://github.com/kentcdodds/kentcdodds.com/blob/main/app/routes/blog.tsx)
-  - https://github.com/wKovacs64/drinks/blob/dev/app/navigation/breadcrumbs.tsx
+- [Blog Category Filter](https://github.com/kentcdodds/kentcdodds.com/blob/main/app/routes/blog.tsx)
+- [Resizeable Image](https://github.com/Habib-Shahzad/tiptap-resizable-image/tree/main/src/components)
+- [Breadcrumbs](https://github.com/wKovacs64/drinks/blob/dev/app/navigation/breadcrumbs.tsx)
 
 ## Database Setup
 
-I use [Render](https://render.com/) for hosting a postgress database using Prisma ORM.
-Create a new database and then add the following environment variables to your `.env` file.
+I am using Prisma with a PostgreSQL database. Locally during development I use a local postgress database. The Development and Production databases are hosted by CockroachDB.
 
-```sh
-DATABASE_URL=''
+```shellscript
+npm install @prisma/cli --save-dev
 ```
+
+## Authentication Setup
+
+I am using Remix-Auth & Discord strategy for authentication.
+
+- [Remix Auth](https://github.com/sergiodxa/remix-auth)
+- [Remix Utils](https://github.com/sergiodxa/remix-utils)
+- [Discord](https://discord.com/developers/applications)
+
 
 ## Image Upload Setup
 
@@ -40,58 +88,7 @@ CLOUDINARY_API_KEY=
 CLOUDINARY_API_SECRET=
 CLOUDINARY_CLOUD_NAME=
 
-## Fly Setup
-
-1. [Install `flyctl`](https://fly.io/docs/getting-started/installing-flyctl/)
-
-2. Sign up and log in to Fly
-
-```sh
-flyctl auth signup
-```
-
-1. Setup Fly. It might ask if you want to deploy, say no since you haven't built the app yet.
-
-```sh
-flyctl launch
-```
-
-# Welcome to Remix + Vite
-
-📖 See the [Remix docs](https://remix.run/docs) and the [Remix Vite docs](https://remix.run/docs/en/main/future/vite) for details on supported features.
-
-## Tech Stack
-
-- [Remix](https://remix.run/)
-- [Vite](https://vitejs.dev/)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Prisma](https://www.prisma.io/)
-- [PostgreSQL](https://www.postgresql.org/)
-- [Fly.io](https://fly.io/)
-- [Cloudinary](https://cloudinary.com/)
-- [Zod](https://zod.dev/)
-
-## Additional Packages
-
-- [Prettier Tailwind](https://github.com/tailwindlabs/prettier-plugin-tailwindcss)
-- [tsx](https://www.npmjs.com/package/tsx)
-- [Remix Dev Tools](https://remix-development-tools.fly.dev/)
-- [Remix Flat Routes](https://github.com/kiliman/remix-flat-routes)
-- [Remix Auth](https://github.com/sergiodxa/remix-auth)
-
-## ToDos
-
-- [] Rewrite, refactor, or create new components derived from the original project.
-  - [] brand-icon.tsx
-  - [] user-placeholder.tsx
-  - [] resume/index.ts
-  - [] Prisma seed data
-  - []
-
-## Documentation
-
-### scripts
+## Scripts & Other Automation
 
 I am trying to do a bunch of automation and one thing is to seed my db AND scan my project for updated content and update the db with the new content.
 
@@ -99,9 +96,24 @@ I am trying to do a bunch of automation and one thing is to seed my db AND scan 
  "firstSeed": "npx prisma db push && npx prisma generate && npx prisma db seed && tsx scripts/init-seed.ts",
  ```
 
+I am using the following to update my react and react-dom versions to the latest canary versions.
+
+ ```json
+  "overrides": {
+    "react": "18.3.0-canary-c3048aab4-20240326",
+    "react-dom": "18.3.0-canary-c3048aab4-20240326"
+  }
+  ```
+
 This should only be run once during the initial dev and production set up.  Using this at any other time will wipe your db. I should add some type of warning!
 
-# zods stf
+## Code and Additional Information
+
+### Zod with Action discrimator
+
+- [Zod Discriminated Union](https://www.jacobparis.com/content/zod-actions-remix)
+
+```Typescript
 // This adds type narrowing by the intent property
 const Schema = z.discriminatedUnion('intent', [
   z.object({ intent: z.literal('delete'), id: z.string() }),
@@ -122,15 +134,28 @@ export async function action({ request }: ActionArgs) {
       const _exhaustiveCheck: never = data;
   }
 };
+```
 
-### Images
+## Environment Variables
 
-- [Blur Data URL Generator](https://blurred.dev/)
--
+- Generate SESSION Secrets
+use ```openssl rand -hex 32``` to generate a secret key for the .env file
 
-## Getting Started
+- Environment Variables
+Create a `.env` file in the root of the project and add the following environment variables:
 
-- use ```openssl rand -hex 32``` to generate a secret key for the .env file
+```shellscript
+DATABASE_URL=
+SESSION_SECRET=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+CLOUDINARY_CLOUD_NAME=
+DISCORD_CALLBACK_URL=
+DISCORD_CLIENT_SECRET=
+DISCORD_CLIENT_ID=
+ALLOW_INDEXING=
+
+```
 
 ## Development
 
@@ -140,68 +165,8 @@ Run the Vite dev server:
 npm run dev
 ```
 
-## Deployment
+## Remix Specific Commands & Resources
 
-First, build your app for production:
-
-```sh
-npm run build
-```
-
-Then run the app in production mode:
-
-```sh
-npm start
-```
-
-Now you'll need to pick a host to deploy it to.
-
-### DIY
-
-If you're familiar with deploying Node applications, the built-in Remix app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-- `build/server`
-- `build/client`
-
-# Welcome to Remix + Vite!
-
-📖 See the [Remix docs](https://remix.run/docs) and the [Remix Vite docs](https://remix.run/docs/en/main/guides/vite) for details on supported features.
-
-## Development
-
-
-https://github.com/jolbol1/JamesShopland.com
-
-
-Run the Vite dev server:
-
-```shellscript
-npm run dev
-```
-
-## Deployment
-
-First, build your app for production:
-
-```sh
-npm run build
-```
-
-Then run the app in production mode:
-
-```sh
-npm start
-```
-
-Now you'll need to pick a host to deploy it to.
-
-### DIY
-
-If you're familiar with deploying Node applications, the built-in Remix app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-- `build/server`
-- `build/client`
+- [Serigo' Remix Blog](https://sergiodxa.com/)
+- [Jacob Paris](https://www.jacobparis.com/)
+- [Remix Docs](https://remix.run/docs/en/main)

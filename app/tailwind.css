@@ -19,6 +19,13 @@
   font-display: swap;
 }
 
+:root {
+  --dna-color: black;
+}
+
+[data-theme='dark'] {
+  --dna-color: white;
+}
 @layer base {
   :root {
     --background: 0 0% 100%;
