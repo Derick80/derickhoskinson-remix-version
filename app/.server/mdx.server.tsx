@@ -69,11 +69,7 @@ const getMDXFileContent = async (
         H3
       },
       mdxOptions(options) {
-        options.remarkPlugins = [
-          ...(options.remarkPlugins ?? []),
-          remarkGfm,
-
-        ]
+        options.remarkPlugins = [...(options.remarkPlugins ?? []), remarkGfm]
 
         options.rehypePlugins = [
           ...(options.rehypePlugins ?? [

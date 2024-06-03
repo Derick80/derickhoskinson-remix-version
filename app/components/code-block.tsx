@@ -1,4 +1,4 @@
-export default function   CodeBlock({
+export default function CodeBlock({
   children
 }: {
   children: any

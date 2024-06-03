@@ -9,7 +9,7 @@ import { AppRouteHandle } from '~/lib/types'
 
 export async function loader() {
   const frontmatter = await getDirectoryFrontMatter('blog')
-  console.log(frontmatter);
+  console.log(frontmatter)
 
   const categories = frontmatter.map((post) => post.categories).flat()
   const uniqueCategories = [...new Set(categories)]

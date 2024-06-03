@@ -1,5 +1,4 @@
 import {
-  ActionFunctionArgs,
   json,
   LinksFunction,
   LoaderFunctionArgs,
@@ -25,9 +24,8 @@ import { HoneypotInputs, HoneypotProvider } from 'remix-utils/honeypot/react'
 import { isAuthenticated } from './.server/auth.server'
 import { SunIcon, MoonIcon, LaptopIcon } from '@radix-ui/react-icons'
 import { z } from 'zod'
-import { getTheme, setTheme, Theme } from './.server/theme.server'
+import { getTheme, Theme } from './.server/theme.server'
 import { ClientHintCheck, getHints, useHints } from './lib/client-hints'
-import { invariantResponse } from '@epic-web/invariant'
 import { useRequestInfo } from './lib/request-info'
 import { useNonce } from './lib/nonce-providers'
 import { GeneralErrorBoundary } from './components/error-boundry'
@@ -40,6 +38,8 @@ import { TooltipProvider } from './components/ui/tooltip'
 import { Toaster } from './components/ui/toaster'
 import React from 'react'
 import { Separator } from './components/ui/separator'
+import UserMenu from './components/user-menu'
+import { action } from './routes/_action.set-theme'
 
 export const links: LinksFunction = () => [
   { rel: 'manifest', href: '/manifest.webmanifest' },
@@ -93,10 +93,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   })
 }
 
-// export function shouldRevalidate() {
-//   // only need the root loader to run once, no need to revalidate
-//   return false
-// }
+// export const shouldRevalidate = () => false
 
 // this is preobably broken
 
@@ -118,30 +115,6 @@ export const meta: MetaFunction<typeof loader> = () => {
 export const handle: AppRouteHandle = {
   breadcrumb: () => ({ title: 'DerickHoskinson.com' })
 }
-export async function action({ request }: ActionFunctionArgs) {
-  const formData = await request.formData()
-  try {
-    honeypot.check(formData)
-  } catch (error) {
-    // @ts-expect-error error is a string most likely
-    return json({ error: error.message }, { status: 400 })
-  }
-
-  const submission = parseWithZod(formData, {
-    schema: ThemeFormSchema
-  })
-
-  invariantResponse(submission.status === 'success', 'Invalid theme submission')
-  const { theme } = submission.value
-
-  const responseInit = {
-    headers: {
-      'set-cookie': setTheme(theme)
-    }
-  }
-  return json({ result: submission.reply() }, responseInit)
-}
-
 function Document({
   children,
   nonce,
@@ -206,29 +179,27 @@ function App() {
   return (
     <Document nonce={nonce} theme={theme}>
       <Toaster />
-      <div className='flex h-full flex-col gap-6 mx-auto max-w-3xl'>
-        <header
-          className={`flex h-16 flex-row bg-accent justify-between items-center px-0 fixed-header ${
-            isScrollingDown ? 'hidden-header' : ''
-          }`}
-        >
-          <Icon name='apple'></Icon>
+      <header
+        className={`flex h-16 border-b-2 border-primary/10 fixed flex-row justify-between items-center px-0 top-0 ransition-transform duration-300 ease-in-out z-50 ${
+          isScrollingDown ? '-translate-y-full' : ''
+        }`}
+      >
+        <Icon name='apple'></Icon>
 
-          <NavigationBar />
-          <div className='flex gap-2'>
-            <Icon name='apple'></Icon>
-            <ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />
-          </div>
-        </header>
-
-        <div className='flex-1 min-h-screen pt-16'>
-          <Breadcrumbs />
-          <Separator />
-          <Outlet />
+        <NavigationBar />
+        <div className='flex gap-2'>
+          <UserMenu />
+          <ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />
         </div>
+      </header>
 
-        <div className='container flex justify-between pb-5'>footer things</div>
+      <div className='flex-1 min-h-screen px-4 pt-4'>
+        <Breadcrumbs />
+        <Separator />
+        <Outlet />
       </div>
+
+      <div className='container flex justify-between pb-5'>footer things</div>
     </Document>
   )
 }
@@ -271,7 +242,7 @@ export function useTheme() {
  */
 export function useOptimisticThemeMode() {
   const fetchers = useFetchers()
-  const themeFetcher = fetchers.find((f) => f.formAction === '/')
+  const themeFetcher = fetchers.find((f) => f.formAction === '/set-theme')
 
   if (themeFetcher && themeFetcher.formData) {
     const submission = parseWithZod(themeFetcher.formData, {
@@ -289,7 +260,7 @@ function ThemeSwitch({ userPreference }: { userPreference?: Theme | null }) {
 
   const [form] = useForm({
     id: 'theme-switch',
-    lastResult: fetcher.data?.result
+    lastResult: fetcher.data?.submission.value
   })
 
   const optimisticMode = useOptimisticThemeMode()
@@ -303,7 +274,7 @@ function ThemeSwitch({ userPreference }: { userPreference?: Theme | null }) {
   }
 
   return (
-    <fetcher.Form method='POST' {...getFormProps(form)}>
+    <fetcher.Form method='POST' {...getFormProps(form)} action='/set-theme'>
       <HoneypotInputs label='Please leave this field blank' />
 
       <input type='hidden' name='theme' value={nextMode} />
@@ -381,7 +352,7 @@ export const menuItems: MenuItem[] = [
     label: 'CV',
     title: 'View my CV',
     path: '/cv',
-    icon: <Icon name='dna' ></Icon>
+    icon: <Icon name='dna'></Icon>
   }
 ]
 

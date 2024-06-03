@@ -9,7 +9,14 @@ import { mergeMeta } from '~/lib/meta'
 import { notFoundMeta } from './$'
 import { GeneralErrorBoundary } from '~/components/error-boundry'
 import { H1, H2, Muted } from '~/components/layout/typography'
-import { Card, CardTitle,CardContent,CardDescription,CardHeader,CardFooter } from '~/components/ui/card'
+import {
+  Card,
+  CardTitle,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardFooter
+} from '~/components/ui/card'
 
 const slugSchema = z.object({
   slug: z.string()
@@ -55,20 +62,14 @@ export default function PostRoute() {
   return (
     <div className='flex prosse dark:prsose-invert flex-col rounded-md text-wrap shadow p-1 pt-0 gap-4'>
       <Outlet />
-      <Card
-        className='mt-2'
-      >
+      <Card className='mt-2'>
         <CardHeader>
-           <CardTitle >{data.frontmatter.title}</CardTitle>
-       </CardHeader>
-      <Muted>
-        {data.frontmatter.readingTime}
-     </Muted>
-      <Muted>
-        { data.frontmatter.wordCount } words
-      </Muted>
+          <CardTitle>{data.frontmatter.title}</CardTitle>
+        </CardHeader>
+        <Muted>{data.frontmatter.readingTime}</Muted>
+        <Muted>{data.frontmatter.wordCount} words</Muted>
       </Card>
-        <Component />
+      <Component />
     </div>
   )
 }

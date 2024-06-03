@@ -108,7 +108,6 @@ const mdxComponents = {
       className={cn('mb-4 mt-2 overflow-x-auto  rounded-lg', className)}
       {...props}
     />
-
   ),
   CodeBlock
 }

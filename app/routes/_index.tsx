@@ -24,7 +24,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const session = await sessionStorage.getSession(request.headers.get('Cookie'))
   const sessionId = session.get('authSession')
 
-  console.log(sessionId, 'sessionId from _index loader')
   const users = await prisma.user.findMany({
     include: {
       sessions: true,
@@ -58,6 +57,7 @@ export default function Index() {
     <div>
       <h1>Hello world!</h1>
       <h2>Users</h2>
+      <ShinyRockBadge />
       <ul>
         {users.map((user) => (
           <li key={user.id}>{user.username}</li>
@@ -72,11 +72,28 @@ export default function Index() {
         sense of peace she had not known for years. This was her sanctuary, a
         place where worries melted away and time seemed to stand still.
       </p>
+      <div className='glass-card'>
+        The serene landscape stretched out before her, a patchwork of greens and
+        yellows beneath a clear blue sky. Birds chirped merrily in the distance,
+        their songs a perfect accompaniment to the gentle rustling of the
+        leaves. The sun cast a warm glow, bathing everything in its golden
+        light. She took a deep breath, savoring the fresh, crisp air, feeling a
+        sense of peace she had not known for years. This was her sanctuary, a
+        place where worries melted away and time seemed to stand still.
+      </div>
       <div className='flex flex-wrap gap-2'>
         <Icon name='color-pal' />
       </div>
       <h1>Welcome to DerickHoskinson.com</h1>
       <h3>Welcome to my website</h3>
     </div>
+  )
+}
+
+const ShinyRockBadge = () => {
+  return (
+    <span className='badge-shiny-rock text-white font-bold px-4 py-2'>
+      Shiny Rock Badge
+    </span>
   )
 }

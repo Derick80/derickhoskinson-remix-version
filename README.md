@@ -11,6 +11,10 @@ nvm use node v20.11.0
 
 - Until form login is working again login with discord and then copy paste the userId from prisma studio into the seed file
 
+
+## dependency usage
+https://sergiodxa.com/tutorials/find-and-remove-unused-code-with-knip
+
 ## Component Reference
 
 - Accordian - <https://github.com/AllanSimoyi/PersonalWebsite/blob/main/app/core/components/AccordionItem.tsx>
