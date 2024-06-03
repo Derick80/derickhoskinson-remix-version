@@ -180,7 +180,7 @@ function App() {
     <Document nonce={nonce} theme={theme}>
       <Toaster />
       <header
-        className={`flex h-16 border-b-2 border-primary/10 fixed flex-row justify-between items-center px-0 top-0 ransition-transform duration-300 ease-in-out z-50 ${
+        className={`flex h-16 border-b-2 border-primary/10 flex-row justify-between items-center px-0 transition-transform duration-300 ease-in-out z-50 ${
           isScrollingDown ? '-translate-y-full' : ''
         }`}
       >
@@ -193,7 +193,7 @@ function App() {
         </div>
       </header>
 
-      <div className='flex-1 min-h-screen px-4 pt-4'>
+      <div className='flex-1 min-h-screen px-4 pt-4 mt-14'>
         <Breadcrumbs />
         <Separator />
         <Outlet />
