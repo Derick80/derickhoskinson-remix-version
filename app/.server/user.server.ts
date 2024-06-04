@@ -1,4 +1,4 @@
-import { redirect, SerializeFrom } from '@remix-run/node'
+import { redirect } from '@remix-run/node'
 import { sessionStorage } from './auth.server'
 import { prisma } from './prisma.server'
 import { z } from 'zod'

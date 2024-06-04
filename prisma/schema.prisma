@@ -10,20 +10,32 @@ generator client {
 }
 
 datasource db {
-  provider = "cockroachdb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id        String    @id @default(cuid())
-  email     String    @unique
-  username  String?
-  avatarUrl String?
-  role      String?   @default("user")
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  accounts  Account[]
-  sessions  Session[]
+  id         String      @id @default(cuid())
+  email      String      @unique
+  username   String?
+  avatarUrl  String?
+  role       String?     @default("user")
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  accounts   Account[]
+  sessions   Session[]
+  userimages UserImage[]
+}
+
+model UserImage {
+  id                 String   @id @default(cuid())
+  imageUrl           String
+  cloudinaryPublicId String
+  filename           String
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId             String
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 }
 
 model Account {

@@ -16,28 +16,24 @@ const UserMenu = () => {
   const user = useOptionalUser()
 
   return (
-    <DropdownMenu
-    >
+    <DropdownMenu>
       <DropdownMenuTrigger asChild>
-
-          <Avatar>
-            <AvatarImage
-              src='https://res.cloudinary.com/dch-photo/image/upload/c_fit,h_400,w_400/v1675678833/Japan_2023/Kanazawa/PXL_20230201_023514635_upzfrv.jpg'
-              alt='User profile'
-            ></AvatarImage>
-            <AvatarFallback>US</AvatarFallback>
-          </Avatar>
+        <Avatar>
+          <AvatarImage
+            src='https://res.cloudinary.com/dch-photo/image/upload/c_fit,h_400,w_400/v1675678833/Japan_2023/Kanazawa/PXL_20230201_023514635_upzfrv.jpg'
+            alt='User profile'
+          ></AvatarImage>
+          <AvatarFallback>US</AvatarFallback>
+        </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuPortal>
-          <DropdownMenuContent
-
-      >
-        <DropdownMenuLabel>Profile</DropdownMenuLabel>
-        <DropdownMenuItem>Settings</DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>Logout</DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenuPortal>
+        <DropdownMenuContent>
+          <DropdownMenuLabel>Profile</DropdownMenuLabel>
+          <DropdownMenuItem>Settings</DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>Logout</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenuPortal>
     </DropdownMenu>
   )
 }
