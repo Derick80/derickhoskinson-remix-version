@@ -2,11 +2,10 @@ import { json } from '@remix-run/node'
 import { Link, Outlet, useLoaderData } from '@remix-run/react'
 import { getDirectoryFrontMatter } from '~/.server/mdx.server'
 import { GeneralErrorBoundary } from '~/components/error-boundry'
-import { getLoaderDataForHandle } from '~/components/layout/breadcrumbs'
 import { Caption, Muted } from '~/components/layout/typography'
 import { Badge } from '~/components/ui/badge'
 import { AppRouteHandle } from '~/lib/types'
-
+import type { FrontMatter } from '~/.server/mdx.server'
 export async function loader() {
   const frontmatter = await getDirectoryFrontMatter('blog')
   console.log(frontmatter)
@@ -82,7 +81,7 @@ const PostPreviews = (frontmatter: FrontMatter) => {
           {frontmatter.description}
         </Muted>
         <div className='flex flex-col gap-1 md:gap-2'>
-          <div className='flex gap-1 items-center'>
+          <div className='flex gap-1 items-center flex-wrap'>
             <Caption>Categories:</Caption>
             {frontmatter.categories.map((category) => (
               <Badge key={category}>

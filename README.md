@@ -2,18 +2,19 @@
 
 - [Remix Docs](https://remix.run/docs)
 
-
 nvm use node v20.11.0
-### Notes
-- [SEO](https://github.com/nasa-gcn/remix-seo)
-## Prisma Seeding in Development
 
+### Notes
+
+- [SEO](https://github.com/nasa-gcn/remix-seo)
+
+## Prisma Seeding in Development
 
 - Until form login is working again login with discord and then copy paste the userId from prisma studio into the seed file
 
-
 ## dependency usage
-https://sergiodxa.com/tutorials/find-and-remove-unused-code-with-knip
+
+<https://sergiodxa.com/tutorials/find-and-remove-unused-code-with-knip>
 
 ## Component Reference
 
@@ -21,7 +22,7 @@ https://sergiodxa.com/tutorials/find-and-remove-unused-code-with-knip
 - Resizeable  image component [reference](https://github.com/Habib-Shahzad/tiptap-resizable-image/tree/main/src/components)
 - Blog Category Filter
   - [reference](https://github.com/kentcdodds/kentcdodds.com/blob/main/app/routes/blog.tsx)
-  - https://github.com/wKovacs64/drinks/blob/dev/app/navigation/breadcrumbs.tsx
+  - <https://github.com/wKovacs64/drinks/blob/dev/app/navigation/breadcrumbs.tsx>
 
 ## Database Setup
 
@@ -102,6 +103,7 @@ I am trying to do a bunch of automation and one thing is to seed my db AND scan 
 This should only be run once during the initial dev and production set up.  Using this at any other time will wipe your db. I should add some type of warning!
 
 # zods stf
+
 // This adds type narrowing by the intent property
 const Schema = z.discriminatedUnion('intent', [
   z.object({ intent: z.literal('delete'), id: z.string() }),
@@ -165,15 +167,13 @@ Make sure to deploy the output of `npm run build`
 - `build/server`
 - `build/client`
 
-# Welcome to Remix + Vite!
+# Welcome to Remix + Vite
 
 📖 See the [Remix docs](https://remix.run/docs) and the [Remix Vite docs](https://remix.run/docs/en/main/guides/vite) for details on supported features.
 
 ## Development
 
-
-https://github.com/jolbol1/JamesShopland.com
-
+<https://github.com/jolbol1/JamesShopland.com>
 
 Run the Vite dev server:
 
