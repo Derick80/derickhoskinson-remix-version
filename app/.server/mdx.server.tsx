@@ -15,7 +15,7 @@ import rehypeAutoLinkHeadings from 'rehype-autolink-headings'
 import '~/mdx.css'
 import { Button } from '~/components/ui/button'
 import { H1, H2, H3 } from '~/components/layout/typography'
-interface FrontMatter {
+export type FrontMatter ={
   slug: string
   title: string
   date: string

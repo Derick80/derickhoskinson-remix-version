@@ -1,0 +1,55 @@
+---
+title: MDX Blog Posts
+date: '2024-06-23'
+author: Derick Hoskinson, Ph.D.
+description: Documenting the process of creating MDX blog posts
+published: true
+categories: [documentation, features]
+---
+
+# {frontmatter.title}
+
+## Introduction0
+
+This document will focus on the process of creating MDX blog posts for my Remix blog. Derickhoskinson.com also uses MDX for some additional pages outside of blog posts. For now, this will not be extensively covered in this document.
+
+In my original web app I used TipTap Editor to create a blog post and save it to a database. Realistically, I could have continued to do this since this is my personal site and I am the only one (for now) creating content. However, I like the idea of having the blog posts in a more portable format. I decided to use mdx because it can be used to create interactive or illustrated blog content.
+### Decisions
+- Place MDX files in the `content/blog` directory
+- Use .mdx files for blog posts
+- Write a script to generate the initial MDX file for a new blog post
+
+## Order of Feature Development
+1. Create initial directories and code to support MDX blog posts.  --- detail this more below
+2. Write a script to generate the initial MDX file for a new blog post
+3. Implement blog post images.
+4. Use categories to filter, sort, search, and display blog posts
+5. Implement a 'related posts' feature
+6. Implement a 'Hero Post' feature
+7. Implement saving blog posts to a database
+8. Implement a visitor interaction component called 'Post Comments and Reactions'
+
+### 1. Create initial directories and code to support MDX blog posts
+- Create a `content/blog` directory
+
+- Create a `content/blog/mdx-blog-posts.mdx` file
+### 2. Write a script to generate the initial MDX file for a new blog post
+- Create a script that will generate a new MDX file in the `content/blog` directory
+
+### 3. Implement blog post images
+- Add a `coverImage` field to the frontmatter of the MDX file
+- Add an `images` directory to the `public` directory
+
+### 4. Use categories to filter, sort, search, and display blog posts
+
+### 5. Implement a 'related posts' feature
+
+### 6. Implement a 'Hero Post' feature
+
+### 7. Implement saving blog posts to a database
+
+### 8. Implement a visitor interaction component called 'Post Comments and Reactions'
+
+
+Is it worth limiting the number or name of the categories?
+

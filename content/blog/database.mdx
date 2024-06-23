@@ -7,99 +7,13 @@ published: true
 categories: [database, cockroachdb, postgres]
 ---
 
-import { Button } from '~/components/ui/button'
-
-
-
-export const wow = 'wow!'
-
-import { TContainer } from '~/components/tst-container'
-
 # {frontmatter.title}
 
-## Context
+## Overview
 
-### Test import button
-<TContainer />
-VariantAlleles.com will use a distributed SQL database that is compatible with postgres to store data. The database is hosted on cockroachlabs cloud.
+This document will focus on the planning and implementation of the database for VariantAlleles.com.
 
-### Old content
-
-#### VariantAlleles.com will use a distributed SQL database that is compatible with postgres to store data. The database is hosted on cockroachlabs cloud.
-
-
-VariantAlleles.com will use a distributed SQL database that is compatible with postgres to store data. The database is hosted on cockroachlabs cloud.
-## Test out code blocks with syntax highlighting
-
-```tsx
-
-function getImageBuilder (
-    id: string,
-    alt: string = '',
-    { className, style }: { className?: string; style?: CSSProperties } = {},
-): ImageBuilder {
-
-function imageBuilder (transformations?: TransformerOption) {
-        return buildImageUrl(id, { transformations })
-    }
-    imageBuilder.alt = alt
-    imageBuilder.id = id
-    imageBuilder.className = className
-    imageBuilder.style = style
-    return imageBuilder
-}
-
-```
-## History
-
-### Discovery
-
-In the 1840s, Urbain Le Verrier used Newtonian mechanics to predict the
-position of…
-
-### Name and symbol
-
-The name Pluto is for the Roman god of the underworld, from a Greek epithet for
-Hades…
-
-### Planet X disproved
-
-Once Pluto was found, its faintness and lack of a viewable disc cast doubt…
-
-## Orbit
-
-Pluto’s orbital period is about 248 years…
-## Autolink literals
-
-www.example.com, https://example.com, and contact@example.com.
-
-## Footnote
-
-A note[^1]
-
-[^1]: Big note.
-
-## Strikethrough
-
-~one~ or ~~two~~ tildes.
-
-## Table
-
-| a | b  |  c |  d  |
-| - | :- | -: | :-: |
-
-## Tasklist
-
-* [ ] to do
-* [x] done
-### CockroachDB
-
-Connection string template:
-```ts
-DATABASE_URL=postgresql://USER:PASSWORD.HOST:PORT/DATABASE?sslmode=verify-full
-```
-
-## Decision
+## Database & Host
 
 Using CockroachDB as the database for VariantAlleles.com has been useful for development as I test out different application frameworks. I can just place the conncection string in the .env file and the application will connect to the database.
 
