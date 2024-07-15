@@ -36,7 +36,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 export const handle: AppRouteHandle = {
   breadcrumb: (matches) => {
     const data = getLoaderDataForHandle<typeof loader>(
-      'routes/blog.$slug',
+      'routes/blog_.$slug',
       matches
     )
     // concat some strings together to generate a different title
@@ -69,7 +69,11 @@ export default function PostRoute() {
         <Muted>{data.frontmatter.readingTime}</Muted>
         <Muted>{data.frontmatter.wordCount} words</Muted>
       </Card>
-      <Component />
+      <div
+        className='not-prose'>
+              <Component />
+
+        </div>
     </div>
   )
 }
