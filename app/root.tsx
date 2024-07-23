@@ -307,7 +307,6 @@ const NavigationBar = () => {
               }
               title={item.title}
             >
-              {item.icon}
               <span className='hidden md:block'>{item.label}</span>
             </NavLink>
           </li>

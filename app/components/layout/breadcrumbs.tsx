@@ -6,7 +6,6 @@ import {
   type UIMatch
 } from '@remix-run/react'
 import type { SerializeFrom } from '@remix-run/node'
-import { Icon } from '../icon-component'
 import { SlashIcon } from '@radix-ui/react-icons'
 
 export default function Breadcrumbs() {
