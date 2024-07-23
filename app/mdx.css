@@ -1,4 +1,4 @@
-[data-rehype-pretty-code-figure] code {
+/* [data-rehype-pretty-code-figure] code {
   @apply grid min-w-full break-words rounded-lg p-0 text-xs justify-start;
   counter-reset: line;
 }
@@ -39,3 +39,5 @@ code {
 figure {
   @apply my-1 bg-[#2e3440ff];
 }
+
+ */
