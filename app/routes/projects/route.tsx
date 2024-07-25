@@ -1,5 +1,11 @@
 import { type LoaderFunctionArgs, json } from '@remix-run/node'
 import { AppRouteHandle } from '~/lib/types'
+import { useLoaderData } from '@remix-run/react'
+import { GeneralErrorBoundary } from '~/components/error-boundry'
+import { H1 } from '~/components/layout/typography'
+import { Separator } from '~/components/ui/separator'
+import { projects } from 'content/resources/projects'
+import { ProjectCard } from '~/components/project-card'
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   return json({})
@@ -9,11 +15,7 @@ export const handle: AppRouteHandle = {
   breadcrumb: () => ({ title: 'Projects' })
 }
 
-import { useLoaderData } from '@remix-run/react'
-import { GeneralErrorBoundary } from '~/components/error-boundry'
-import ProjectCard from './project-card'
-import { H1 } from '~/components/layout/typography'
-import { Separator } from '~/components/ui/separator'
+
 
 export default function ProjectRoute() {
   const data = useLoaderData<typeof loader>()
@@ -24,10 +26,15 @@ export default function ProjectRoute() {
       <Separator />
 
       <div className='-m-4 flex flex-wrap gap-2 justify-center  items-center'>
-        <ProjectCard />
-        <ProjectCard />
-        <ProjectCard />
-        <ProjectCard />
+      { projects.map((project, index) => (
+                    <ProjectCard
+                        key={ index }
+                        projects={ project }
+                    />
+                ))
+
+
+                }
       </div>
     </div>
   )

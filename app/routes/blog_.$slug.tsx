@@ -69,11 +69,9 @@ export default function PostRoute() {
         <Muted>{data.frontmatter.readingTime}</Muted>
         <Muted>{data.frontmatter.wordCount} words</Muted>
       </Card>
-      <div
-        className='not-prose'>
-              <Component />
-
-        </div>
+      <div className='not-prose'>
+        <Component />
+      </div>
     </div>
   )
 }

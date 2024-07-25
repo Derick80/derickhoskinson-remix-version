@@ -48,7 +48,4 @@ const uploadImageToCloudinary = async ({
   return uploadPromise
 }
 
-
-
 export { uploadImageToCloudinary }
-
