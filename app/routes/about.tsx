@@ -22,7 +22,7 @@ export default function AboutRoute() {
     <div className='relative border-2 border-red-500'>
       <Component />
       <ImageWithPlaceholder
-        src={ `https://res.cloudinary.com/dch-photo/image/upload/v1717442678/Me/PXL_20230206_020710804_vvv8kl.jpg` }
+        src={`https://res.cloudinary.com/dch-photo/image/upload/v1717442678/Me/PXL_20230206_020710804_vvv8kl.jpg`}
         placeholderSrc='/assets/placeholder-user.jpg'
         className='h-64 w-full object-cover'
       />

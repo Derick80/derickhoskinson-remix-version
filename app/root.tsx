@@ -134,6 +134,7 @@ function Document({
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width,initial-scale=1' />
         <meta name='robots' content='noindex, nofollow' />
+        <script defer data-domain="derickhoskinson.com" src="https://plausible.io/js/script.js"></script>
 
         <Links />
       </head>
@@ -351,6 +352,12 @@ export const menuItems: MenuItem[] = [
     label: 'CV',
     title: 'View my CV',
     path: '/cv',
+    icon: <Icon name='dna'></Icon>
+  },
+  {
+    label: 'Beta',
+    title: 'View the beta page',
+    path: '/beta',
     icon: <Icon name='dna'></Icon>
   }
 ]

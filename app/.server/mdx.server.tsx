@@ -15,7 +15,7 @@ import rehypeAutoLinkHeadings from 'rehype-autolink-headings'
 import '~/mdx.css'
 import { Button } from '~/components/ui/button'
 import { H1, H2, H3 } from '~/components/layout/typography'
-export type FrontMatter ={
+export type FrontMatter = {
   slug: string
   title: string
   date: string
@@ -107,33 +107,33 @@ const getDirectoryFrontMatter = async (directory: string) => {
   })
 
   if (!mdxFiles.length) throw new Error('No posts found')
- const allPostsData = await Promise.all(
+  const allPostsData = await Promise.all(
     mdxFiles.map(async (fileName) => {
-      const slug = fileName.replace(/\.mdx$/, '');
-      const fullPath = path.join(postsDirectory, fileName);
-      const fileContents = fs.readFileSync(fullPath, 'utf8');
+      const slug = fileName.replace(/\.mdx$/, '')
+      const fullPath = path.join(postsDirectory, fileName)
+      const fileContents = fs.readFileSync(fullPath, 'utf8')
 
       // Use gray-matter to parse the post metadata section
-      const matterResult = matter(fileContents);
+      const matterResult = matter(fileContents)
 
-      const readingTimeResult = readingTime(matterResult.content);
-      const wordCount = matterResult.content.split(/\s+/gu).length;
-      const matterData = matterResult.data as FrontMatter & { content: string };
+      const readingTimeResult = readingTime(matterResult.content)
+      const wordCount = matterResult.content.split(/\s+/gu).length
+      const matterData = matterResult.data as FrontMatter & { content: string }
 
-      matterData.published = matterData.published ?? false;
-      matterData.slug = slug;
-      matterData.content = matterResult.content;
-      matterData.readingTime = readingTimeResult.text;
-      matterData.wordCount = wordCount;
+      matterData.published = matterData.published ?? false
+      matterData.slug = slug
+      matterData.content = matterResult.content
+      matterData.readingTime = readingTimeResult.text
+      matterData.wordCount = wordCount
 
-      return matterData;
+      return matterData
     })
-  );
+  )
 
   // Filter out posts that are not published
-  const publishedPosts = allPostsData.filter((post) => post.published);
+  const publishedPosts = allPostsData.filter((post) => post.published)
 
-  return publishedPosts;
+  return publishedPosts
 }
 
 export { getMDXFileContent, getDirectoryFrontMatter }
