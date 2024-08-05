@@ -1,3 +1,4 @@
+import { Cloudinary } from '@cloudinary/url-gen/index';
 import { writeAsyncIterableToWritable } from '@remix-run/node'
 import cloudinary from 'cloudinary'
 
@@ -6,6 +7,7 @@ cloudinary.v2.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET
 })
+
 
 type UploadImageToCloudinary = {
   data: AsyncIterator<Uint8Array>

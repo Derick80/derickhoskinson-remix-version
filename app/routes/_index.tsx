@@ -4,6 +4,11 @@ import { sessionStorage } from '~/.server/auth.server'
 import { getDirectoryFrontMatter } from '~/.server/mdx.server'
 import { prisma } from '~/.server/prisma.server'
 import { Icon } from '~/components/icon-component'
+import {Cloudinary} from "@cloudinary/url-gen";
+import { extractPublicId } from 'cloudinary-build-url'
+// Import the responsive plugin
+import {accessibility, AdvancedImage, lazyload, placeholder, responsive} from '@cloudinary/react';
+
 
 export const meta: MetaFunction = () => {
   return [
@@ -23,7 +28,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
   // I need to figure out how to fix these types
   const session = await sessionStorage.getSession(request.headers.get('Cookie'))
   const sessionId = session.get('authSession')
+  const publicId = extractPublicId(
+    'https://res.cloudinary.com/dch-photo/image/upload/c_fit,h_300,w_400/v1675678833/Japan_2023/Kanazawa/PXL_20230201_023514635_upzfrv.jpg'
+    ) //sample
 
+    console.log('publicId', publicId);
+    
   const users = await prisma.user.findMany({
     include: {
       sessions: true,
@@ -51,12 +61,30 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return json({ users, frontmatter })
 }
 
+export const cld = new Cloudinary({
+  cloud: {
+    cloudName: 'dch-photo'
+  }
+}); 
 export default function Index() {
   const { users } = useLoaderData<typeof loader>()
+  const imgtst = cld.image('Japan_2023/Kanazawa/PXL_20230201_023514635_upzfrv')
   return (
     <div>
       <h1>Hello world!</h1>
       <h2>Users</h2>
+      <div 
+        className='w-full h-20'
+      >
+    <AdvancedImage 
+      width='400px' height='300px'
+    cldImg={imgtst}plugins={[lazyload(), responsive({
+      steps: [200, 400, 800, 1600, 2000],
+    }), accessibility(), placeholder({mode: 'blur'}
+      
+    )]}
+></AdvancedImage>
+</div>
       <ShinyRockBadge />
       <ul>
         {users.map((user) => (

@@ -133,7 +133,6 @@ function Document({
         <Meta />
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width,initial-scale=1' />
-        <meta name='robots' content='noindex, nofollow' />
         <script defer data-domain="derickhoskinson.com" src="https://plausible.io/js/script.js"></script>
 
         <Links />
@@ -200,7 +199,10 @@ function App() {
         <Outlet />
       </div>
 
-      <div className='container flex justify-between pb-5'>footer things</div>
+      <footer className='container flex justify-around pb-5'>
+        <p>&copy; {new Date().getFullYear()} DerickHoskinson.com</p>
+       
+      </footer>
     </Document>
   )
 }
@@ -281,6 +283,7 @@ function ThemeSwitch({ userPreference }: { userPreference?: Theme | null }) {
       <input type='hidden' name='theme' value={nextMode} />
 
       <button
+      title='Change the theme'
         type='submit'
         className='flex h-8 w-8 cursor-pointer items-center justify-center'
       >
@@ -308,7 +311,7 @@ const NavigationBar = () => {
               }
               title={item.title}
             >
-              <span className='hidden md:block'>{item.label}</span>
+              <span className='md:block'>{item.label}</span>
             </NavLink>
           </li>
         ))}

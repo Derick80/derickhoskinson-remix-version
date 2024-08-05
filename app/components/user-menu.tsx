@@ -17,10 +17,10 @@ const UserMenu = () => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger >
         <Avatar>
           <AvatarImage
-            src='https://res.cloudinary.com/dch-photo/image/upload/c_fit,h_400,w_400/v1675678833/Japan_2023/Kanazawa/PXL_20230201_023514635_upzfrv.jpg'
+            src='https://res.cloudinary.com/dch-photo/image/upload/c_fit,h_300,w_400/v1675678833/Japan_2023/Kanazawa/PXL_20230201_023514635_upzfrv.jpg'
             alt='User profile'
           ></AvatarImage>
           <AvatarFallback>US</AvatarFallback>
